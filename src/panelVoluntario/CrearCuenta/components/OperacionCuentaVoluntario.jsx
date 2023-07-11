@@ -9,40 +9,50 @@ import {
   formVoluntarioHelper,
 } from "../helpers/formVoluntarioHelper";
 import { useEffect } from "react";
+import { apiGetVoluntario } from "../../Perfil/api/apiVoluntario";
+ 
+export const OperacionCuentaVoluntario = ({ operacion }) => {
 
-export const OperacionCuentaVoluntario = ({ operacion = "Edit", id = "" }) => {
+   
   const [usuario, setUsuario] = useState(Voluntario);
   const [option, setoption] = useState(1)
   let showPassword = true;
   if (operacion === "Editar") {
     showPassword = false;
-    setoption(2)
+  
   }
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm(formOptions);
+
   useEffect(() => {
     setUsuario({ ...usuario });
+    operacion === "Crear"? [setoption(1)]:[setoption(2),listVoluntario()]
   }, []);
 
+  const listVoluntario = async () => {
+      const voluntario = await apiGetVoluntario();   
+      setUsuario(voluntario);
+  }
+
   const crud = async () => {
-  
+
     await formVoluntarioHelper(usuario,option);
   };
-
   const handleChange = (e) => {
     e.preventDefault();
     const nombreArchivo = e.target.name;
     const archivo = e.target.files[0];
-
+    console.log(archivo);
     setUsuario((prevFormulario) => ({
       ...prevFormulario,
       [nombreArchivo]: archivo,
     }));
   };
-
+  console.log(usuario);
   return (
     <>
       <NavBarSinLogeo />

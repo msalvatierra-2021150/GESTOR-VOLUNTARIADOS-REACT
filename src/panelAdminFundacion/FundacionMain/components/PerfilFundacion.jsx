@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-export const PerfilFundacion = () => {
+export const PerfilFundacion = ({fotoP , fotoF, nombre}) => {
+ 
   return (
     <>
       <div className="col-12 grid-margin mt-5">
@@ -12,7 +13,7 @@ export const PerfilFundacion = () => {
           <div className="cover">
             <figure>
               <Image
-                src="https://antiguatours.net/wp-content/uploads/blog-jan2022.jpg"
+                src={fotoF}
                 alt="profile cover"
               />
             </figure>
@@ -20,11 +21,11 @@ export const PerfilFundacion = () => {
               <div className="d-flex align-items-center">
                 <Image
                   className="profile-pic"
-                  src="https://hermanopedrogt.org/wp-content/uploads/2022/06/ISOTIPO-06.png"
+                  src={fotoP} 
                   alt="profile"
                 />
                 <span className="profile-name">
-                  Obras Sociales Del Hermano Pedro
+                 {nombre}
                 </span>
               </div>
               <div className="d-none d-md-block">

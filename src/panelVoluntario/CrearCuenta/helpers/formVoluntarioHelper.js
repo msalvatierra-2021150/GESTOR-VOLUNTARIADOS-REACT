@@ -21,7 +21,7 @@ export const formOptions = { resolver: yupResolver(formSchema) };
 export const formVoluntarioHelper = async (voluntario, option) => {
 
     let resultado;
-   
+ 
     switch (option) {
         case 1:
         
@@ -80,9 +80,9 @@ export const formVoluntarioHelper = async (voluntario, option) => {
                     confirmButtonText: "Go  !"
                 }).then((r) => {
                     if (r.isConfirmed) {
-                        window.location.href = '/'
+                        window.location.href = '/cuenta'
                     } else {
-                        window.location.href = '/'
+                        window.location.href = '/cuenta'
                     }
                 })
             }

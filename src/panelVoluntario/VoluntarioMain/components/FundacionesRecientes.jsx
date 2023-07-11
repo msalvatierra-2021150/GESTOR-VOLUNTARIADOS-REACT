@@ -2,6 +2,7 @@ import React from "react";
 import { Image } from "react-bootstrap";
 
 export const FundacionesRecientes = () => {
+  
   return (
     <>
       <div className="card rounded">
@@ -83,6 +84,11 @@ export const FundacionesRecientes = () => {
               </div>
               <div className="col-md-4">
                 <figure className="mb-0">
+                  <Image
+                    className="img-fluid"
+                  
+                    alt=""
+                  />
                 </figure>
               </div>
             </div>

@@ -3,15 +3,15 @@ import Swal from 'sweetalert2';
 
 const token = localStorage.getItem('token');
 
-const URL = "http://localhost:8080/api/voluntario/";
-
-export const apiGetPdf = async () => {
+const URL = "http://localhost:8080/api/convocatoria/";
+const URLF = "http://localhost:8080/api/adminFundacion/";
+export const apiGetConvocatoriaById = async (id) => {
     try {
-
-        const { data: { voluntario } } = await axios.get(`${URL}voluntario`,
+        console.log(id);
+        const { data: { convocatorias } } = await axios.get(`${URL}mostrarById/${id}`,
             { headers: { "x-token": token } });
 
-        return voluntario;
+        return convocatorias;
 
     } catch ({ response: { data: { msg } } }) {
         if (msg === "Token no válido") {
@@ -41,14 +41,14 @@ export const apiGetPdf = async () => {
             });
         }
     }
-
 }
-export const apiGetPdfArchivo = async (nombre) => {
-
+export const apiGetConvocatoria = async () => {
     try {
-        const { data: { fileUrl } } = await axios.get(`${URL}fileVoluntario/${nombre}`);
-        console.log(fileUrl);
-        return fileUrl;
+
+        const { data: { convocatorias } } = await axios.get(`${URL}mostrar`,
+            { headers: { "x-token": token } });
+
+        return convocatorias;
 
     } catch ({ response: { data: { msg } } }) {
         if (msg === "Token no válido") {
@@ -61,7 +61,7 @@ export const apiGetPdfArchivo = async (nombre) => {
             }).then((result) => {
                 if (result.isConfirmed) {
                     localStorage.removeItem("token");
-                    window.location.href = '/';
+                    window.location.href = '/login';
                 }
             });
         } else {
@@ -78,25 +78,24 @@ export const apiGetPdfArchivo = async (nombre) => {
             });
         }
     }
-
 }
-export const apiPDF = async (nombre, correo, password, dpi, telefono, direccion, CV, DPI, antecedentes,fotoPerfil,fotoFondo) => {
-    
+
+export const apiPostConvocatoria = async (titulo,descripcion,lugar,cupo,fechaHoraStart,fechaHoraEnd,horaInicio,horaFinal,imagen) => {
     const formData = new FormData();
-    formData.append("nombre", nombre);
-    formData.append("correo", correo);
-    formData.append("password", password);
-    formData.append("dpi", dpi);
-    formData.append("telefono", telefono);
-    formData.append("direccion", direccion);
-    formData.append("CV", CV);
-    formData.append("DPI", DPI);
-    formData.append("antecedentes", antecedentes);
-    formData.append("fotoPerfil", fotoPerfil);
-    formData.append("fotoFondo", fotoFondo);
+    formData.append("titulo", titulo);
+    formData.append("descripcion", descripcion);
+    formData.append("lugar", lugar);
+    formData.append("cupo", cupo);
+    formData.append("fechaHoraStart", fechaHoraStart);
+    formData.append("fechaHoraEnd", fechaHoraEnd);
+    formData.append("horaInicio", horaInicio);
+    formData.append("horaFinal", horaFinal);
+    formData.append("imagen", imagen);
+
     try {
         
-        const userSavecv = await axios.post(`${URL}save`,formData);
+        const userSavecv = await axios.post(`${URL}agregar`,formData,
+        { headers: { "x-token": token } });
   
         return true;
 
@@ -129,30 +128,29 @@ export const apiPDF = async (nombre, correo, password, dpi, telefono, direccion,
     }
 
 }
-
-export const apiUpdatePDF = async (id, nombre, correo, password, dpi, telefono, direccion,CV, DPI,antecedentes,fotoPerfil,fotoFondo) => {
-
+export const apiUpdateConvocatoria = async (id,titulo,descripcion,lugar,cupo,fechaHoraStart,fechaHoraEnd,horaInicio,horaFinal,imagen) => {
+    
     const formData = new FormData();
     formData.append("id", id);
-    formData.append("nombre", nombre);
-    formData.append("correo", correo);
-    formData.append("password", password);
-    formData.append("dpi", dpi);
-    formData.append("telefono", telefono);
-    formData.append("direccion", direccion);
-    formData.append("CV", CV);
-    formData.append("DPI", DPI);
-    formData.append("antecedentes", antecedentes);
-    formData.append("fotoPerfil", fotoPerfil);
-    formData.append("fotoFondo", fotoFondo);
+    formData.append("titulo", titulo);
+    formData.append("descripcion", descripcion);
+    formData.append("lugar", lugar);
+    formData.append("cupo", cupo);
+    formData.append("fechaHoraStart", fechaHoraStart);
+    formData.append("fechaHoraEnd", fechaHoraEnd);
+    formData.append("horaInicio", horaInicio);
+    formData.append("horaFinal", horaFinal);
+    formData.append("imagen", imagen);
 
     try {
-        const userSavecv = await axios.put(`${URL}editar/${id}`, formData);
-
+        
+        const userSavecv = await axios.put(`${URL}editar/${id}`,formData,
+        { headers: { "x-token": token } });
+  
         return true;
 
     } catch ({ response: { data: { msg } } }) {
-
+       
         if (msg === 'el token ha expirado') {
             Swal.fire({
                 icon: 'info',
@@ -163,13 +161,13 @@ export const apiUpdatePDF = async (id, nombre, correo, password, dpi, telefono, 
             }).then((result) => {
                 if (result.isConfirmed) {
                     localStorage.removeItem("token");
-                    window.location.href = '/login';
+                    window.location.href = '/';
                 }
             });
         } {
             Swal.fire({
                 icon: 'error',
-                title: 'Error al editar',
+                title: 'Error al agregar',
                 text: msg,
                 showConfirmButton: true,
                 confirmButtonText: "Ok"
@@ -180,10 +178,27 @@ export const apiUpdatePDF = async (id, nombre, correo, password, dpi, telefono, 
     }
 
 }
-
-export const apiVoluntarioDelete = async (id) => {
+export const apiFundacionDelete = async (id) => {
     try {
-        const { } = await axios.delete(`${URL}/eliminar/${id}`);
+        await axios.delete(`${URLF}eliminar`,
+        { headers: { "x-token": token } });
+        return true;
+    } catch ({ response: { data: { msg } } }) {
+
+        if (msg === "Token no válido") {
+            localStorage.removeItem("token");
+            window.location.href = '/login';
+        }
+        if (msg) {
+            return msg;
+        }
+    }
+
+}
+export const apiConvocatoriaDelete = async (id) => {
+    try {
+        await axios.delete(`${URL}eliminar/${id}`,
+        { headers: { "x-token": token } });
         return true;
     } catch ({ response: { data: { msg } } }) {
 

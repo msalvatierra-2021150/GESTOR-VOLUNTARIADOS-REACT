@@ -1,10 +1,43 @@
 import React from "react";
 import { Image, Button, Form, Dropdown } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage } from "@fortawesome/free-solid-svg-icons";
-
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { Convocatoria } from "../models/models.convocatoria";
+import { formConvocatoriaHelper, formOptions } from "../helpers/formConvocatoriaHelper";
+ 
 export const NuevaPublicacion = () => {
-  return (
+  const [nuevaC, setNuevaC] = useState(Convocatoria)
+  const departamentosGuatemala = [
+    "Guatemala","Baja Verapaz","Alta Verapaz","El Progreso",
+    "Izabal","Zacapa","Chiquimula","Santa Rosa","Jalapa",
+    "Jutiapa","Sacatepéquez","Chimaltenango","Escuintla",
+    "Sololá","Totonicapán","Quetzaltenango","Suchitepéquez",
+    "Retalhuleu","San Marcos","Huehuetenango","Quiché",,"Petén"
+  ];
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm(formOptions);
+  const crud = async () => {
+
+    await formConvocatoriaHelper(nuevaC,1);
+  };
+
+  const handleChange = (e) => {
+
+    e.preventDefault();
+    const nombreArchivo = e.target.name;
+    const archivo = e.target.files[0];
+    console.log(archivo);
+    setNuevaC((prevFormulario) => ({
+      ...prevFormulario,
+      [nombreArchivo]: archivo,
+    }));
+  };
+
+  return ( 
     <>
       <div className="collapse" id="collapseExample">
         <div className="card card-body">
@@ -24,13 +57,17 @@ export const NuevaPublicacion = () => {
               </div>
             </div>
             <div className="card-body">
-              <Form.Group controlId="exampleForm.ControlTextarea">
+              <Form.Group controlId="exampleForm.ControlTextarea" onSubmit={handleSubmit(crud)}>
                 <div className="form-floating mb-3">
                   <input
+                    {...register("titulo")}
                     type="text"
-                    className="form-control"
-                    id="nombre"
                     placeholder=" "
+                    className="form-control"
+                    value={nuevaC.titulo}
+                    onChange={({ target: { value } }) => {
+                      setNuevaC(() => ({ ...nuevaC, titulo: value }));
+                    }}
                   />
                   <label htmlFor="floatingTextInput1">
                     Nombre de la Fundación
@@ -38,47 +75,107 @@ export const NuevaPublicacion = () => {
                 </div>
                 <div className="form-floating mb-3">
                   <textarea
+                    {...register("descripcion")}
                     type="text"
-                    className="form-control"
-                    id="descripcion"
                     placeholder=" "
+                    className="form-control"
+                    value={nuevaC.descripcion}
+                    onChange={({ target: { value } }) => {
+                      setNuevaC(() => ({ ...nuevaC, descripcion: value }));
+                    }}
                   />
-                  <label htmlFor="floatingTextInput1">Descripción</label>
+                  <label htmlFor="floatingTextInput1">
+                    Descripción</label>
                 </div>
                 <select
                   className="form-select mb-3"
                   aria-label="Default select example"
+
+                  {...register("lugar")}
+                        type="text"
+                        placeholder=" "
+                    
+                        value={nuevaC.lugar}
+                        onChange={({ target: { value } }) => {
+                          setNuevaC(() => ({ ...nuevaC, lugar: value }));
+                        }}
                 >
                   <option>Departamento</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  {
+                    departamentosGuatemala.map(d =>{
+                      return (
+                        <option  key={d}>{d} </option>
+                       
+                      )
+                    })
+                  } 
                 </select>
                 <div className="form-floating mb-3">
                   <input
+                    {...register("cupo")}
                     type="number"
-                    className="form-control"
-                    id="cupo"
                     placeholder=" "
+                    className="form-control"
+                    value={nuevaC.cupo}
+                    onChange={({ target: { value } }) => {
+                      setNuevaC(() => ({ ...nuevaC, cupo: value }));
+                    }}
                   />
                   <label htmlFor="floatingTextInput1">Cupo</label>
                 </div>
                 <div className="form-floating mb-3">
                   <input
+                    {...register("horaInicio")}
+                    type="time"
+                    className="form-control"
+                    value={(nuevaC.horaInicio)}
+                    onChange={({ target: { value } }) => {
+                        
+                        setNuevaC(() => ({ ...nuevaC,horaInicio: value }));
+                    }
+                    }
+                  />
+                  <label htmlFor="floatingTextInput1">Hora de Inicio</label>
+                </div>
+                <div className="form-floating mb-3">
+                  <input
+                    {...register("fechaHoraStart")}
                     type="date"
                     className="form-control"
-                    id="fechaDeInicio"
-                    placeholder=" "
+                    value={(nuevaC.fechaHoraInicio)}
+                    onChange={({ target: { value } }) => {
+                        
+                        setNuevaC(() => ({ ...nuevaC,fechaHoraStart: value }));
+                    }
+                    }
                   />
                   <label htmlFor="floatingTextInput1">Fecha de Inicio</label>
                 </div>
-                <label>Fecha de Finalizacion: </label>
                 <div className="form-floating mb-3">
                   <input
+                     {...register("horaFinal")}
+                     type="time"
+                     className="form-control"
+                     value={(nuevaC.horaFinal)}
+                     onChange={({ target: { value } }) => {
+                         
+                         setNuevaC(() => ({ ...nuevaC,horaFinal: value }));
+                     }
+                     }
+                  />
+                  <label htmlFor="floatingTextInput1">Hora de finalizacion</label>
+                </div>
+               
+                <div className="form-floating mb-3">
+                  <input
+                    {...register("fechaHoraEnd")}
                     type="date"
                     className="form-control"
-                    id="FechaFin"
-                    placeholder=" "
+                    value={(nuevaC.fechaHoraFin)}
+                    onChange={({ target: { value } }) => {
+                        setNuevaC(() => ({ ...nuevaC,fechaHoraEnd: value }));
+                    }
+                    }
                   />
                   <label htmlFor="floatingTextInput1">
                     Fecha Finalización:
@@ -89,7 +186,9 @@ export const NuevaPublicacion = () => {
                       <input
                         type="file"
                         className="form-control"
-                        id="imgperfil"
+                        name="imagen"
+                        id="imagen" 
+                          onChange={(e) => handleChange(e)}
                       />
                     </div>
                   </div>
@@ -98,7 +197,7 @@ export const NuevaPublicacion = () => {
             </div>
             <div className="card-footer">
               <div className="d-flex post-actions">
-                <Button className="btn btn-primary btn-icon-text btn-edit-profile">
+                <Button onClick={crud}className="btn btn-primary btn-icon-text btn-edit-profile">
                   Publicar
                 </Button>
                 <Button

@@ -1,7 +1,8 @@
 import React from "react";
 import { Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
-export const Perfil = () => {
+export const Perfil = ({fotoPerfil, fotoFondo, nombre}) => {
+
   return (
     <>
       <div className="col-12 grid-margin mt-5">
@@ -9,7 +10,7 @@ export const Perfil = () => {
           <div className="cover">
             <figure>
               <Image
-                src="https://antiguatours.net/wp-content/uploads/blog-jan2022.jpg"
+                src={fotoPerfil}
                 alt="profile cover"
               />
             </figure>
@@ -17,10 +18,10 @@ export const Perfil = () => {
               <div className="d-flex align-items-center">
                 <Image
                   className="profile-pic"
-                  src="https://hermanopedrogt.org/wp-content/uploads/2022/06/ISOTIPO-06.png"
+                  src={fotoFondo}
                   alt="profile"
                 />
-                <span className="profile-name">Obras Sociales Del Hermano Pedro</span>
+                <span className="profile-name">{nombre} </span>
               </div>
               <div className="d-none d-md-block">
                 

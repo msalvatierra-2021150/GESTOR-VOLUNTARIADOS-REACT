@@ -3,8 +3,42 @@ import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare} from '@fortawesome/free-solid-svg-icons';
 import { Link } from "react-router-dom";
+import { apiFundacionDelete } from "../api/apiConvocatoria";
+import Swal from 'sweetalert2'; 
+export const InformacionFundacion = ({objetos}) => {
+  console.log(objetos);
+  const eliminar= async (id) => {
+    let result = await apiFundacionDelete(id);
+    if (result) {
+      Swal.fire({
+        icon: "success",
+        title: "Fundacion Eliminado",
+        text: "Se ha eliminado correctamente",
+        showConfirmButton: true,
+        confirmButtonText: "Ok",
+        
+      }).then((result) => {
+        if (result.isConfirmed) {
+            localStorage.removeItem("token");
+            window.location.href = '/login';
+        }
+    });
+    } else {
+      Swal.fire({
+        icon: "info",
+        title: "Error",
+        text: "No se ha podido eliminar",
+        showConfirmButton: true,
+        confirmButtonText: "Ok",
+      }).then((result) => {
+        if (result.isConfirmed) {
+            localStorage.removeItem("token");
+            window.location.href = '/login';
+        }
+    });
+    }
+  }
 
-export const InformacionFundacion = () => {
   return (
     <>
       <div className="card rounded">
@@ -44,32 +78,37 @@ export const InformacionFundacion = () => {
             </Dropdown>
           </div>
           <p>
-            Hi! I'm Amiah the Senior UI Designer at Vibrant. We hope you enjoy
-            the design and quality of Social.
+           {objetos.acerca_de}
           </p>
           <div className="mt-3">
             <label className="tx-11 font-weight-bold mb-0 text-uppercase">
               Direccion:
             </label>
-            <p className="text-muted">November 15, 2015</p>
+            <p className="text-muted">{objetos.direccion} </p>
           </div>
           <div className="mt-3">
             <label className="tx-11 font-weight-bold mb-0 text-uppercase">
               Telefono:
             </label>
-            <p className="text-muted">New York, USA</p>
+            <p className="text-muted">{objetos.telefono}</p>
           </div>
           <div className="mt-3">
             <label className="tx-11 font-weight-bold mb-0 text-uppercase">
               Correo Electronico:
             </label>
-            <p className="text-muted">me@nobleui.com</p>
+            <p className="text-muted">{objetos.correo}</p>
           </div>
           <div className="mt-3">
             <label className="tx-11 font-weight-bold mb-0 text-uppercase">
               Sitio Web:
             </label>
-            <p className="text-muted">www.nobleui.com</p>
+            <p className="text-muted"><a href={objetos.sitio_web} >Presione Aqui</a> </p>
+          </div>
+          <div className="mt-3">
+            <label className="tx-11 font-weight-bold mb-0 text-uppercase">
+             Eliminar
+            </label>
+            <a onClick={()=>eliminar(objetos._id)} className="text-decoration-underline">Eliminar mi fundacion</a>
           </div>
           <div className="mt-3 d-flex social-links">
             <a

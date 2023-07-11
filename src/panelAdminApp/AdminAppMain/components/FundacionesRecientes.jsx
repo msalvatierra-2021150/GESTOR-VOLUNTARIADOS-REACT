@@ -85,7 +85,7 @@ export const FundacionesRecientes = () => {
                 <figure className="mb-0">
                   <Image
                     className="img-fluid"
-                    src="https://bootdey.com/img/Content/avatar/avatar9.png"
+                   
                     alt=""
                   />
                 </figure>

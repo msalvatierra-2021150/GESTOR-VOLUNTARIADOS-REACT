@@ -5,20 +5,34 @@ import { PublicacionesFundacion } from "./components/PublicacionesFundacion";
 import { ConvocatoriasRecientesFundacion } from "./components/ConvocatoriasRecientesFundacion";
 import { FundacionesSugeridas } from "./components/FundacionesSugeridas";
 import { NuevaPublicacion } from "./components/NuevaPublicacion";
-
+import { useEffect } from "react";
+import { useState } from "react";
+import { apiGetFundacion } from "../CrearCuenta/api/apiFundacion";
 export const FundacionMain = () => {
+  const [nuevaF, setNuevaF] = useState();
+  useEffect(() => {
+    
+   listFundacion();
+  }, []);
 
+  const listFundacion = async () => {
+    const fundacionList = await apiGetFundacion ();
+    setNuevaF(fundacionList);
+  };
+ 
   return (
     <>
       <div className="container custom-container">
         <div className="profile-page tx-13">
           <div className="row">
-            <PerfilFundacion/>
+          {nuevaF=== undefined ? []:[<PerfilFundacion fotoP={nuevaF.fotoPerfil} fotoF={nuevaF.fotoFondo} nombre={nuevaF.nombre} />]}
+            
           </div>
           <div className="row profile-body">
             {/*<!-- left wrapper start -->*/}
             <div className="d-none d-md-block col-md-4 col-xl-3 left-wrapper">
-                <InformacionFundacion/>
+            {nuevaF=== undefined ? []:[ <InformacionFundacion objetos={nuevaF} />]}
+               
             </div>
             {/*<!-- left wrapper end -->
         <!-- middle wrapper start -->*/}

@@ -7,15 +7,57 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import { NavBarSinLogeo } from "../../../NavBarSinLogeo";
-
-export const OperacionCuentaFundacion = ({ operacion = "Edit" , id = ''}) => {
+import { useState } from "react";
+import { Fundacion } from "../models/models.fundacion";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
+import {
+  formOptions,
+  formFundacionHelper,
+} from "../helpers/formFundacionHelper";
+import { apiGetFundacion } from "../api/apiFundacion";
+export const OperacionCuentaFundacion = ({ operacion = "Edit", id = "" }) => {
   let showPassword = true;
+  const [nuevaF, setNuevaF] = useState(Fundacion);
+  const [option, setoption] = useState(1);
+
   if (operacion === "Editar") {
     showPassword = false;
   }
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm(formOptions);
+
+  useEffect(() => {
+    setNuevaF({ ...nuevaF });
+    operacion === "Crear" ? [setoption(1)] : [setoption(2), listFundacion()];
+  }, []);
+
+  const listFundacion = async () => {
+    const fundacionList = await apiGetFundacion();
+    setNuevaF(fundacionList);
+  };
+  const crud = async () => {
+    await formFundacionHelper(nuevaF, option);
+  };
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    const nombreArchivo = e.target.name;
+    const archivo = e.target.files[0];
+
+    setNuevaF((prevFormulario) => ({
+      ...prevFormulario,
+      [nombreArchivo]: archivo,
+    }));
+  };
+  console.log(nuevaF);
   return (
     <>
-      <NavBarSinLogeo/>
+      <NavBarSinLogeo />
       <div className="banner">
         <div className="container p-3 crear-cuenta">
           <div
@@ -29,15 +71,21 @@ export const OperacionCuentaFundacion = ({ operacion = "Edit" , id = ''}) => {
               >
                 {operacion} Cuenta Fundacion
               </h4>
-              <form>
+              <form className="formulario" onSubmit={handleSubmit(crud)}>
                 <div className="row">
-                  <div className={showPassword ? "col-md-6 col-sm-12" : "col-12"}>
+                  <div
+                    className={showPassword ? "col-md-6 col-sm-12" : "col-12"}
+                  >
                     <div className="form-floating mb-3">
                       <input
+                        {...register("nombre")}
                         type="text"
-                        className="form-control"
-                        id="nombre"
                         placeholder=" "
+                        className="form-control"
+                        value={nuevaF.nombre}
+                        onChange={({ target: { value } }) => {
+                          setNuevaF(() => ({ ...nuevaF, nombre: value }));
+                        }}
                       />
                       <label htmlFor="floatingTextInput1">
                         Nombre de la Fundación
@@ -48,10 +96,14 @@ export const OperacionCuentaFundacion = ({ operacion = "Edit" , id = ''}) => {
                     <div className="col-md-6 col-sm-12">
                       <div className="form-floating mb-3">
                         <input
+                          {...register("password")}
                           type="password"
-                          className="form-control"
-                          id="password"
                           placeholder=" "
+                          className="form-control"
+                          value={nuevaF.password}
+                          onChange={({ target: { value } }) => {
+                            setNuevaF(() => ({ ...nuevaF, password: value }));
+                          }}
                         />
                         <label htmlFor="floatingEmailInput">Contraseña</label>
                       </div>
@@ -62,10 +114,14 @@ export const OperacionCuentaFundacion = ({ operacion = "Edit" , id = ''}) => {
                   <div className="col-md-6 col-sm-12">
                     <div className="form-floating mb-3">
                       <input
+                        {...register("correo")}
                         type="email"
-                        className="form-control"
-                        id="correo"
                         placeholder=" "
+                        className="form-control"
+                        value={nuevaF.correo}
+                        onChange={({ target: { value } }) => {
+                          setNuevaF(() => ({ ...nuevaF, correo: value }));
+                        }}
                       />
                       <label htmlFor="floatingTextInput2">
                         Correo electrónico
@@ -75,10 +131,14 @@ export const OperacionCuentaFundacion = ({ operacion = "Edit" , id = ''}) => {
                   <div className="col-md-6 col-sm-12">
                     <div className="form-floating mb-3">
                       <input
+                        {...register("sitio_web")}
                         type="text"
-                        className="form-control"
-                        id="sitioWeb"
                         placeholder=" "
+                        className="form-control"
+                        value={nuevaF.sitio_web}
+                        onChange={({ target: { value } }) => {
+                          setNuevaF(() => ({ ...nuevaF, sitio_web: value }));
+                        }}
                       />
                       <label htmlFor="floatingEmailInput">Sitio Web</label>
                     </div>
@@ -88,10 +148,14 @@ export const OperacionCuentaFundacion = ({ operacion = "Edit" , id = ''}) => {
                   <div className="col-md-6 col-sm-12">
                     <div className="form-floating mb-3">
                       <input
-                        type="number"
-                        className="form-control"
-                        id="telefono"
+                        {...register("telefono")}
+                        type="text"
                         placeholder=" "
+                        className="form-control"
+                        value={nuevaF.telefono}
+                        onChange={({ target: { value } }) => {
+                          setNuevaF(() => ({ ...nuevaF, telefono: value }));
+                        }}
                       />
                       <label htmlFor="floatingEmailInput">Teléfono</label>
                     </div>
@@ -99,10 +163,14 @@ export const OperacionCuentaFundacion = ({ operacion = "Edit" , id = ''}) => {
                   <div className="col-md-6 col-sm-12">
                     <div className="form-floating mb-3">
                       <input
+                        {...register("direccion")}
                         type="text"
-                        className="form-control"
-                        id="direccion"
                         placeholder=" "
+                        className="form-control"
+                        value={nuevaF.direccion}
+                        onChange={({ target: { value } }) => {
+                          setNuevaF(() => ({ ...nuevaF, direccion: value }));
+                        }}
                       />
                       <label htmlFor="floatingEmailInput">Dirección</label>
                     </div>
@@ -112,10 +180,14 @@ export const OperacionCuentaFundacion = ({ operacion = "Edit" , id = ''}) => {
                   <div className="col-md-6 col-sm-12">
                     <div className="form-floating mb-3">
                       <input
+                        {...register("horarios")}
                         type="text"
-                        className="form-control"
-                        id="horarios"
                         placeholder=" "
+                        className="form-control"
+                        value={nuevaF.horarios}
+                        onChange={({ target: { value } }) => {
+                          setNuevaF(() => ({ ...nuevaF, horarios: value }));
+                        }}
                       />
                       <label htmlFor="floatingEmailInput">Horarios</label>
                     </div>
@@ -125,10 +197,14 @@ export const OperacionCuentaFundacion = ({ operacion = "Edit" , id = ''}) => {
                   <div className="col-md-12 col-sm-12">
                     <div className="form-floating mb-3">
                       <textarea
+                        {...register("acerca_de")}
                         type="text"
-                        className="form-control"
-                        id="acercade"
                         placeholder=" "
+                        className="form-control"
+                        value={nuevaF.acerca_de}
+                        onChange={({ target: { value } }) => {
+                          setNuevaF(() => ({ ...nuevaF, acerca_de: value }));
+                        }}
                       />
                       <label htmlFor="floatingEmailInput">Acerca de</label>
                     </div>
@@ -141,7 +217,9 @@ export const OperacionCuentaFundacion = ({ operacion = "Edit" , id = ''}) => {
                       <input
                         type="file"
                         className="form-control"
-                        id="imgperfil"
+                        name="fotoPerfil"
+                        id="fotoPerfil"
+                        onChange={(e) => handleChange(e)}
                       />
                     </div>
                   </div>
@@ -151,7 +229,9 @@ export const OperacionCuentaFundacion = ({ operacion = "Edit" , id = ''}) => {
                       <input
                         type="file"
                         className="form-control"
-                        id="imgfondo"
+                        id="fotoFondo"
+                        name="fotoFondo"
+                        onChange={(e) => handleChange(e)}
                       />
                     </div>
                   </div>
@@ -166,11 +246,14 @@ export const OperacionCuentaFundacion = ({ operacion = "Edit" , id = ''}) => {
                           <FontAwesomeIcon icon={faInstagram} />
                         </span>
                         <input
+                          {...register("instagram")}
                           type="text"
                           className="form-control ml-3"
                           placeholder="URL de Instagram"
-                          aria-label="Username"
-                          aria-describedby="basic-addon1"
+                          value={nuevaF.instagram}
+                          onChange={({ target: { value } }) => {
+                            setNuevaF(() => ({ ...nuevaF, instagram: value }));
+                          }}
                         />
                       </div>
                     </div>
@@ -180,11 +263,14 @@ export const OperacionCuentaFundacion = ({ operacion = "Edit" , id = ''}) => {
                           <FontAwesomeIcon icon={faFacebook} />
                         </span>
                         <input
+                          {...register("facebook")}
                           type="text"
                           className="form-control ml-3"
-                          placeholder="URL de Facebook"
-                          aria-label="Username"
-                          aria-describedby="basic-addon1"
+                          placeholder="URL de facebook"
+                          value={nuevaF.facebook}
+                          onChange={({ target: { value } }) => {
+                            setNuevaF(() => ({ ...nuevaF, facebook: value }));
+                          }}
                         />
                       </div>
                     </div>
@@ -194,24 +280,28 @@ export const OperacionCuentaFundacion = ({ operacion = "Edit" , id = ''}) => {
                           <FontAwesomeIcon icon={faTwitter} />
                         </span>
                         <input
+                          {...register("twitter")}
                           type="text"
-                          className="form-control"
-                          placeholder="URL de Twitter"
-                          aria-label="Username"
-                          aria-describedby="basic-addon1"
+                          className="form-control ml-3"
+                          placeholder="URL de twitter"
+                          value={nuevaF.twitter}
+                          onChange={({ target: { value } }) => {
+                            setNuevaF(() => ({ ...nuevaF, twitter: value }));
+                          }}
                         />
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="text-center">
-                  <Button
+                  <button
                     type="submit"
                     className="btn btn-primary"
                     style={{ borderRadius: "0px" }}
+                    onClick={crud}
                   >
                     {operacion} Cuenta
-                  </Button>
+                  </button>
                 </div>
               </form>
             </div>

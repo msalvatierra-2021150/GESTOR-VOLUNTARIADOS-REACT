@@ -35,9 +35,9 @@ export const formAdminHelper = async (admin, option) => {
                     confirmButtonText: "Go  !"
                 }).then((r) => {
                     if (r.isConfirmed) {
-                        window.location.href = '/login'
+                        window.location.href = '/adminapp-main'
                     } else {
-                        window.location.href = '/login'
+                        window.location.href = '/adminapp-main'
                     }
                 })
             }
@@ -61,9 +61,9 @@ export const formAdminHelper = async (admin, option) => {
                     confirmButtonText: "Go  !"
                 }).then((r) => {
                     if (r.isConfirmed) {
-                        window.location.href = '/'
+                        window.location.href = '/cuenta-admin'
                     } else {
-                        window.location.href = '/'
+                        window.location.href = '/cuenta-admin'
                     }
                 })
             }

@@ -8,14 +8,15 @@ import {
   formAdminHelper,
 } from "../helpers/formAdminHelper";
 import { Admin } from "../models/admin.models";
+import { apiGetAdmin } from "../../Perfil/api/apiAdmin";
 export const OperacionCuentaAdmin = ({ operacion = "Edit" , id = ''}) => {
   let showPassword = true;
   const [admin, setAdmin] = useState(Admin);
   const [option, setoption] = useState(1)
   if (operacion === "Editar") {
     showPassword = false;
-    setoption(2)
-  }
+    
+  } 
 
   const {
     register,
@@ -24,7 +25,14 @@ export const OperacionCuentaAdmin = ({ operacion = "Edit" , id = ''}) => {
   } = useForm(formOptions);
   useEffect(() => {
     setAdmin({ ...admin });
+    operacion === "Crear"? [setoption(1)]:[setoption(2),listAdmin()]
   }, []);
+
+  const listAdmin = async () => {
+    const adminList = await apiGetAdmin();   
+    setAdmin(adminList);
+  }
+
   const crud = async () => {
   
     await formAdminHelper(admin,option);
@@ -39,6 +47,8 @@ export const OperacionCuentaAdmin = ({ operacion = "Edit" , id = ''}) => {
       [nombreArchivo]: archivo,
     }));
   };
+
+  console.log(admin);
   return (
     <>
       <div className="banner">
