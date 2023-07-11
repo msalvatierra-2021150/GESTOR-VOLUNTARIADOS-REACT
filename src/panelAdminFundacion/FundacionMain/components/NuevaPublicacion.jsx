@@ -1,0 +1,220 @@
+import React from "react";
+import { Image, Button, Form, Dropdown } from "react-bootstrap";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { Convocatoria } from "../models/models.convocatoria";
+import { formConvocatoriaHelper, formOptions } from "../helpers/formConvocatoriaHelper";
+ 
+export const NuevaPublicacion = () => {
+  const [nuevaC, setNuevaC] = useState(Convocatoria)
+  const departamentosGuatemala = [
+    "Guatemala","Baja Verapaz","Alta Verapaz","El Progreso",
+    "Izabal","Zacapa","Chiquimula","Santa Rosa","Jalapa",
+    "Jutiapa","Sacatepéquez","Chimaltenango","Escuintla",
+    "Sololá","Totonicapán","Quetzaltenango","Suchitepéquez",
+    "Retalhuleu","San Marcos","Huehuetenango","Quiché",,"Petén"
+  ];
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm(formOptions);
+  const crud = async () => {
+
+    await formConvocatoriaHelper(nuevaC,1);
+  };
+
+  const handleChange = (e) => {
+
+    e.preventDefault();
+    const nombreArchivo = e.target.name;
+    const archivo = e.target.files[0];
+    console.log(archivo);
+    setNuevaC((prevFormulario) => ({
+      ...prevFormulario,
+      [nombreArchivo]: archivo,
+    }));
+  };
+
+  return ( 
+    <>
+      <div className="collapse" id="collapseExample">
+        <div className="card card-body">
+          <div className="card rounded">
+            <div className="card-header">
+              <div className="d-flex align-items-center justify-content-between">
+                <div className="d-flex align-items-center">
+                  <Image
+                    className="img-xs rounded-circle"
+                    src="https://hermanopedrogt.org/wp-content/uploads/2022/06/ISOTIPO-06.png"
+                    alt=""
+                  />
+                  <div className="ml-2 d-flex align-items-center">
+                    <p>Obras Sociales del Hermano Pedro</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="card-body">
+              <Form.Group controlId="exampleForm.ControlTextarea" onSubmit={handleSubmit(crud)}>
+                <div className="form-floating mb-3">
+                  <input
+                    {...register("titulo")}
+                    type="text"
+                    placeholder=" "
+                    className="form-control"
+                    value={nuevaC.titulo}
+                    onChange={({ target: { value } }) => {
+                      setNuevaC(() => ({ ...nuevaC, titulo: value }));
+                    }}
+                  />
+                  <label htmlFor="floatingTextInput1">
+                    Nombre de la Fundación
+                  </label>
+                </div>
+                <div className="form-floating mb-3">
+                  <textarea
+                    {...register("descripcion")}
+                    type="text"
+                    placeholder=" "
+                    className="form-control"
+                    value={nuevaC.descripcion}
+                    onChange={({ target: { value } }) => {
+                      setNuevaC(() => ({ ...nuevaC, descripcion: value }));
+                    }}
+                  />
+                  <label htmlFor="floatingTextInput1">
+                    Descripción</label>
+                </div>
+                <select
+                  className="form-select mb-3"
+                  aria-label="Default select example"
+
+                  {...register("lugar")}
+                        type="text"
+                        placeholder=" "
+                    
+                        value={nuevaC.lugar}
+                        onChange={({ target: { value } }) => {
+                          setNuevaC(() => ({ ...nuevaC, lugar: value }));
+                        }}
+                >
+                  <option>Departamento</option>
+                  {
+                    departamentosGuatemala.map(d =>{
+                      return (
+                        <option  key={d}>{d} </option>
+                       
+                      )
+                    })
+                  } 
+                </select>
+                <div className="form-floating mb-3">
+                  <input
+                    {...register("cupo")}
+                    type="number"
+                    placeholder=" "
+                    className="form-control"
+                    value={nuevaC.cupo}
+                    onChange={({ target: { value } }) => {
+                      setNuevaC(() => ({ ...nuevaC, cupo: value }));
+                    }}
+                  />
+                  <label htmlFor="floatingTextInput1">Cupo</label>
+                </div>
+                <div className="form-floating mb-3">
+                  <input
+                    {...register("horaInicio")}
+                    type="time"
+                    className="form-control"
+                    value={(nuevaC.horaInicio)}
+                    onChange={({ target: { value } }) => {
+                        
+                        setNuevaC(() => ({ ...nuevaC,horaInicio: value }));
+                    }
+                    }
+                  />
+                  <label htmlFor="floatingTextInput1">Hora de Inicio</label>
+                </div>
+                <div className="form-floating mb-3">
+                  <input
+                    {...register("fechaHoraStart")}
+                    type="date"
+                    className="form-control"
+                    value={(nuevaC.fechaHoraInicio)}
+                    onChange={({ target: { value } }) => {
+                        
+                        setNuevaC(() => ({ ...nuevaC,fechaHoraStart: value }));
+                    }
+                    }
+                  />
+                  <label htmlFor="floatingTextInput1">Fecha de Inicio</label>
+                </div>
+                <div className="form-floating mb-3">
+                  <input
+                     {...register("horaFinal")}
+                     type="time"
+                     className="form-control"
+                     value={(nuevaC.horaFinal)}
+                     onChange={({ target: { value } }) => {
+                         
+                         setNuevaC(() => ({ ...nuevaC,horaFinal: value }));
+                     }
+                     }
+                  />
+                  <label htmlFor="floatingTextInput1">Hora de finalizacion</label>
+                </div>
+               
+                <div className="form-floating mb-3">
+                  <input
+                    {...register("fechaHoraEnd")}
+                    type="date"
+                    className="form-control"
+                    value={(nuevaC.fechaHoraFin)}
+                    onChange={({ target: { value } }) => {
+                        setNuevaC(() => ({ ...nuevaC,fechaHoraEnd: value }));
+                    }
+                    }
+                  />
+                  <label htmlFor="floatingTextInput1">
+                    Fecha Finalización:
+                  </label>
+                  <div className="">
+                    <label className="my-2">Imagen de la convocatoria</label>
+                    <div>
+                      <input
+                        type="file"
+                        className="form-control"
+                        name="imagen"
+                        id="imagen" 
+                          onChange={(e) => handleChange(e)}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </Form.Group>
+            </div>
+            <div className="card-footer">
+              <div className="d-flex post-actions">
+                <Button onClick={crud}className="btn btn-primary btn-icon-text btn-edit-profile">
+                  Publicar
+                </Button>
+                <Button
+                  className="btn btn-danger mx-1 btn-icon-text btn-edit-profile"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseExample"
+                  aria-expanded="false"
+                  aria-controls="collapseExample"
+                >
+                  Cancelar
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
