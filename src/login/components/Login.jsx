@@ -26,7 +26,6 @@ export const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault(); //Para que la pagina no se recarge
-    console.log(password);
     const result = await apiLogin(correo, password);
     if (result) {
       Swal.fire({

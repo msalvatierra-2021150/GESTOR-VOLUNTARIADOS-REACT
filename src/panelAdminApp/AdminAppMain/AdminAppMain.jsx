@@ -1,6 +1,6 @@
 import React from 'react'
 import { InformacionUser } from './components/InformacionUser'
-import { NuevaPublicacion } from './components/NuevaPublicacion'
+import { Buscadores } from './components/Buscadores/components/Buscadores'
 import { PublicacionesFundacion } from './components/PublicacionesFundacion'
 import { FundacionesRecientes } from './components/FundacionesRecientes'
 import { AplicacionesRealizadas } from './components/AplicacionesRealizadas'
@@ -20,7 +20,7 @@ export const AdminAppMain = () => {
             <div className="col-md-8 col-xl-6 middle-wrapper">
               <div className="row">
                 <div className="col-md-12 grid-margin">
-                    <NuevaPublicacion/>
+                    <Buscadores/>
                 </div>
                 <div className="col-md-12">
                     <PublicacionesFundacion/>

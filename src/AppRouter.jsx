@@ -21,6 +21,7 @@ import { Aplicaciones } from "./panelAdminFundacion/Aplicaciones/components/Apli
 import { AdminAppMain } from "./panelAdminApp/AdminAppMain/AdminAppMain";
 import { PerfilMain as PerfilAdminMain} from "./panelAdminApp/Perfil/PerfilMain";
 import { OperacionCuentaAdmin } from "./panelAdminApp/OperacionAdminApp/components/OperacionCuentaAdmin";
+import { ConvocatoriasCerradas } from "./panelAdminFundacion/FundacionMain/components/ConvocatoriasCerradas";
 
 export const AppRouter = () => {
     return (
@@ -58,6 +59,8 @@ export const AppRouter = () => {
                 <Route path="/editar-cuenta-fundacion" element={isAdminFundacionAuthenticated() ? (<OperacionCuentaFundacion operacion="Editar"/>) : (<Navigate to="/login" />) } >
                 </Route>
                 <Route path="/convocatorias-fundacion" element={isAdminFundacionAuthenticated() ? (<PublicacionesFundacion soloConvocatorias={true}/>) : (<Navigate to="/login" />) } >
+                </Route>
+                <Route path="/historial-convocatorias" element={isAdminFundacionAuthenticated() ? (<ConvocatoriasCerradas />) : (<Navigate to="/login" />) } >
                 </Route>
                 <Route path="/editar-convocatoria" element={isAdminFundacionAuthenticated() ? (<EditarConvocatoria/>) : (<Navigate to="/login" />) } >
                 </Route>                   

@@ -12,11 +12,11 @@ export const apiLogin = async (correo, password) => {
         //Guardar token en el almacenamiento local del navegador (Local storage)
         (token) ? localStorage.setItem("token", token) : null;
         return token;
-    } catch ({ response: { data: { error } } }) {
+    } catch ({ response: { data: { msg } } }) {
         Swal.fire({
             icon: 'error',
             title: 'Error de Login',
-            text: error
+            text: msg
         });
     }
 }

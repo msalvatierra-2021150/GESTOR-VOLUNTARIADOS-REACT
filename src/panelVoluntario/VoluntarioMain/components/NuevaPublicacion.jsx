@@ -1,9 +1,50 @@
-import React from "react";
+import React, { useState, useContext }  from "react";
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
+import { PublicacionesFundacion } from "./PublicacionesFundacion"
+import DataContext from '../DataContext';
+
+const departamentos = [
+  "Sin filtros",
+  "Guatemala",
+  "Alta Verapaz",
+  "Baja Verapaz",
+  "Chimaltenango",
+  "Chiquimula",
+  "El Progreso",
+  "Escuintla",
+  "Huehuetenango",
+  "Izabal",
+  "Jalapa",
+  "Jutiapa",
+  "Petén",
+  "Quetzaltenango",
+  "Quiché",
+  "Retalhuleu",
+  "Sacatepéquez",
+  "San Marcos",
+  "Santa Rosa",
+  "Sololá",
+  "Suchitepéquez",
+  "Totonicapán",
+  "Zacapa",
+];
 
 export const NuevaPublicacion = () => {
+  const dataContext = useContext(DataContext);
+
+  const [nombreDep, setNombreDep] = useState("");
+  const [termino, setTermino] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (termino.trim().length < 1) return;
+    if (nombreDep === "Sin filtros") setNombreDep("");
+    const data = {search : false, nombreDep, termino};
+    dataContext.setSearchData(data);
+  };
+
   return (
     <>
       <div className="card rounded">
@@ -12,36 +53,6 @@ export const NuevaPublicacion = () => {
             <div className="ml-2 d-flex align-items-center">
               <h5>Buscador de convocatorias</h5>
             </div>
-            <Dropdown>
-              <Dropdown.Toggle
-                variant="link"
-                id="dropdownMenuButton3"
-                className="btn p-0"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="feather feather-more-horizontal icon-lg pb-3px"
-                >
-                  <circle cx="12" cy="12" r="1"></circle>
-                  <circle cx="19" cy="12" r="1"></circle>
-                  <circle cx="5" cy="12" r="1"></circle>
-                </svg>
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item href="#">
-                  <FontAwesomeIcon icon={faImage} className="mx-1" />
-                  Agregar Imagen
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
           </div>
         </div>
         <div className="card-body">
@@ -51,11 +62,13 @@ export const NuevaPublicacion = () => {
                 <select
                   className="form-select"
                   aria-label=".form-select-sm example"
+                  onClick={(e) => setNombreDep(e.target.value)}
                 >
-                  <option>Departamento</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  {
+                    departamentos.map((d) => {
+                      return <option key={d} value={d}>{d}</option>
+                    })
+                  }
                 </select>
               </div>
               <div className="col-8">
@@ -65,8 +78,10 @@ export const NuevaPublicacion = () => {
                     type="search"
                     placeholder="Search"
                     aria-label="Search"
+                    value={termino}
+                    onChange={(e) => setTermino(e.target.value)}
                   />
-                  <button className="btn btn-outline-success" type="submit">
+                  <button className="btn btn-outline-success" type="submit" onClick={(e) => handleSubmit(e)}>
                     Search
                   </button>
                 </form>
