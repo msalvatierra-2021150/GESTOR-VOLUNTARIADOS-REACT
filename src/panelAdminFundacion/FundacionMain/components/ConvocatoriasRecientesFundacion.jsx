@@ -13,7 +13,6 @@ export const ConvocatoriasRecientesFundacion = () => {
     viewConvocatoriaList();
   }, []);
 
-  console.log(convocatoria);
   return (
     <>
       <div className="card rounded">

@@ -19,3 +19,20 @@ export const apiAplicacionDeVoluntario = async (id) => {
         });
     }
 }
+
+export const apiGetAplicacionesDelVoluntario = async (id) => {
+    try {  
+        const URL = `http://localhost:8080/api/aplicacionVoluntariado/mostrar-voluntario`;
+
+        const { data: { aplicaciones } } = await axios.get( URL , {
+            headers:{"x-token": token}
+        }); 
+        return aplicaciones;
+    } catch ({ response: { data: { msg } } }) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al mostrar aplicaciones del voluntarios',
+            text: msg
+        });
+    }
+}
