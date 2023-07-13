@@ -6,6 +6,11 @@ const token = localStorage.getItem("token");
 
 export const apiSearchConvocatorias = async (titulo, lugar, desde, limite) => {
     try {
+        if (lugar === undefined && titulo === undefined) {
+            const { data: { coincidencias, registros } } = await axios.get(`${URL}mostrar-activas?desde=${desde}&limite=${limite}`,
+                { headers: { 'x-token': token } });
+            return { coincidencias, registros };
+        }
         if (lugar.length === 0) {
             const { data: { coincidencias, registros } } = await axios.get(`${URL}mostrar-lugar/${titulo}?desde=${desde}&limite=${limite}`,
                 { headers: { 'x-token': token } });
