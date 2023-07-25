@@ -76,6 +76,14 @@ export const NavBar = () => {
                     Ver Convocatorias
                   </Link>
                 ) : null}
+                                {isAdminFundacionAuthenticated() ? (
+                  <Link
+                    to="lista-voluntariados"
+                    className="mx-2 d-flex align-items-center justify-content-center text-white text-nowrap"
+                  >
+                    Ver voluntariados
+                  </Link>
+                ) : null}
 
                 {/*MUESTRA SI CUMPLE ROL ADMIN */}
                 {isAdminAppAuthenticated() ? (

@@ -6,6 +6,7 @@ import { FundacionesRecientes } from "./components/FundacionesRecientes";
 import { AplicacionesRealizadas } from "./components/AplicacionesRealizadas";
 import DataContext from "./DataContext";
 import { useState } from "react";
+import { Footer } from "../../Footer";
 
 export const VoluntarioMain = () => {
   const [searchData, setSearchData] = useState('');
@@ -49,6 +50,7 @@ export const VoluntarioMain = () => {
           </div>
         </div>
       </DataContext.Provider>
+      <Footer/>
     </>
   );
 };

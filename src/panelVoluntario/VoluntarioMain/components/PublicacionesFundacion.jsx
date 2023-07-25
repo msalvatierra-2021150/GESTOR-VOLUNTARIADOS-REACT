@@ -1,19 +1,19 @@
 import { useEffect, useState, useContext } from "react";
-import { Image, Dropdown } from "react-bootstrap";
+import { Image} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faPenToSquare,
-  faEye,
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DataContext from "../DataContext";
 import { apiSearchConvocatorias } from "../api/apiConvocatorias";
 import { apiAplicacionDeVoluntario } from "../api/AplicacionDeVoluntario";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import banco from "../../../img/logo.png";
+import Swal from 'sweetalert2';
+
 export const PublicacionesFundacion = () => {
   const dataContext = useContext(DataContext);
   const [totalPages, setTotalPages] = useState(0);
@@ -91,20 +91,26 @@ export const PublicacionesFundacion = () => {
 
   //MODAL
   const [show, setShow] = useState(false);
+  const [idConvocatoria, setIdConvocatoria] = useState('')
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = (idConvocatoria) => {
+    console.log(idConvocatoria);
+    setShow(true);
+    setIdConvocatoria(idConvocatoria);
+  };
 
   const aplicarVoluntariado = async () => {
-    const result = await apiAplicacionDeVoluntario("641e8631f3251766b3b74281");
+    const result = await apiAplicacionDeVoluntario(idConvocatoria);
 
-    setShow(!result);
     if (result) {
       Swal.fire({
         icon: "success",
         title: "¡Gracias, por sumarte al cambio!",
         text: "Has aplicado a esta convocatoria correctamente.",
         confirmButtonText: "Ok",
+      }).then(() => {
+        location.reload();
       });
     }
   };
@@ -112,7 +118,7 @@ export const PublicacionesFundacion = () => {
     <>
       {!dataContext.searchData.search ? (
         <>
-          <button className="btn btn-danger" onClick={handleGoBack}>
+          <button className="btn btn-danger mb-2" onClick={handleGoBack}>
             Cerrar la busqueda
           </button>
           {totalPages === 0 && (
@@ -126,11 +132,11 @@ export const PublicacionesFundacion = () => {
                     <div className="d-flex align-items-center">
                       <Image
                         className="img-xs rounded-circle"
-                        src="https://bootdey.com/img/Content/avatar/avatar6.png"
-                        alt=""
+                        src={c.fundacion.fotoPerfil}
+                        alt={c.fundacion.nombre}
                       />
                       <div className="ml-2">
-                        <p>{c.fundacion.nombre}</p>
+                        <p className="px-2 fw-semibold">{c.fundacion.nombre}</p>
                       </div>
                     </div>
                   </div>
@@ -156,12 +162,12 @@ export const PublicacionesFundacion = () => {
                   <p className="mb-3 tx-14">
                     Hora fin: {formatTime(c.fecha_fin)}
                   </p>
-                  <Image className="img-fluid" src={c.array_img} alt="" />
+                  <Image className="img-fluid" src={c.imagen} alt="" />
                 </div>
                 <div className="card-footer">
                   <div className="d-flex flex-column align-items-center">
                     <h6>¿Te interesaría participar? ¡Aplica!</h6>
-                    <Button variant="primary" onClick={handleShow}>
+                    <Button variant="primary" onClick={() => handleShow(c._id)}>
                       Aplicar a la convocatoria
                     </Button>
                   </div>
@@ -180,17 +186,17 @@ export const PublicacionesFundacion = () => {
                     <div className="d-flex align-items-center">
                       <Image
                         className="img-xs rounded-circle"
-                        src="https://bootdey.com/img/Content/avatar/avatar6.png"
-                        alt=""
+                        src={c.fundacion.fotoPerfil}
+                        alt={c.fundacion.nombre}
                       />
                       <div className="ml-2">
-                        <p>{c.fundacion.nombre}</p>
+                        <p className="px-2 fw-semibold">{c.fundacion.nombre}</p>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="card-body">
-                  <h5 className="mb-4 tx-14">¿De que se trata?: {c.titulo}</h5>
+                  <h5 className="mb-4 tx-14">¿De qué se trata?: {c.titulo}</h5>
                   <p className="mb-3 tx-14">
                     Descripcion del voluntariado: {c.descripcion}
                   </p>
@@ -210,13 +216,13 @@ export const PublicacionesFundacion = () => {
                   <p className="mb-3 tx-14">
                     Hora fin: {formatTime(c.fecha_fin)}
                   </p>
-                  <Image className="img-fluid" src={c.array_img} alt="" />
+                  <Image className="img-fluid" src={c.imagen} alt="" />
                 </div>
                 <hr />
                 <div className="card-footer mb-3">
                   <div className="d-flex flex-column align-items-center">
                     <h6>¿Te interesaría participar? ¡Aplica!</h6>
-                    <Button variant="primary" onClick={handleShow}>
+                    <Button variant="primary" onClick={() => handleShow(c._id)}>
                       Aplicar a la convocatoria
                     </Button>
                   </div>

@@ -16,7 +16,7 @@ export const formSchema = Yup.object().shape({
 });
 export const formOptions = { resolver: yupResolver(formSchema) };
 
-export const formFundacionHelper = async (fundacion, option) => {
+export const formFundacionHelper = async (fundacion, photoFondo,photoPerfil,option) => {
     let resultado;
     
 
@@ -32,8 +32,8 @@ export const formFundacionHelper = async (fundacion, option) => {
                fundacion.telefono,
                fundacion.direccion,
                fundacion.horarios,
-               fundacion.fotoPerfil,
-               fundacion.fotoFondo,
+               photoFondo,
+               photoPerfil,
                fundacion.facebook,
                fundacion.instagram,
                fundacion.twitter,
@@ -59,18 +59,18 @@ export const formFundacionHelper = async (fundacion, option) => {
                 resultado = await apiUpdateFundacion(
                 fundacion._id,
                 fundacion.nombre,
-               fundacion.acerca_de,
-               fundacion.correo,
-               fundacion.password,
-               fundacion.sitio_web,
-               fundacion.telefono,
-               fundacion.direccion,
-               fundacion.horarios,
-               fundacion.fotoPerfil,
-               fundacion.fotoFondo,
-               fundacion.facebook,
-               fundacion.instagram,
-               fundacion.twitter,
+                fundacion.acerca_de,
+                fundacion.correo,
+                fundacion.password,
+                fundacion.sitio_web,
+                fundacion.telefono,
+                fundacion.direccion,
+                fundacion.horarios,
+                photoFondo,
+                photoPerfil,
+                fundacion.facebook,
+                fundacion.instagram,
+                fundacion.twitter,
             );
             
             if (resultado) {

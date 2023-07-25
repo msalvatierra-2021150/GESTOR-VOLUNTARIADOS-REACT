@@ -31,7 +31,7 @@ export const Login = () => {
       Swal.fire({
         icon: "success",
         title: "Los datos ingresados son correctos",
-        text: "Ha iniciado sesion correctamente",
+        text: "Ha iniciado sesión correctamente",
         confirmButtonText: "Ok",
       }).then((r) => {
         if (r.isConfirmed) {

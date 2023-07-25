@@ -2,9 +2,12 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useLocation } from 'react-router-dom';
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { getContadoresConvo, getAplicacionesConvo, aceptarAplicacion, rechazarAplicacion } from "../api/apiAplicaciones";
+import { getContadoresConvo, getAplicacionesConvo, aceptarAplicacion, rechazarAplicacion, apiCerrarConvo } from "../api/apiAplicaciones";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
+import { Footer } from "../../../Footer";
+import { ModalDocumentos } from "./ModalDocumentos";
+import { apiGetConvocatoriaById } from "../../FundacionMain/api/apiConvocatoria";
 
 export const Aplicaciones = () => {
   let { search } = useLocation();
@@ -12,13 +15,14 @@ export const Aplicaciones = () => {
   let convo = query.get('id_convocatoria');
   const maxResultsPerPage = 10;
   const [results, setResults] = useState(0);
+  const [showModal, setShowModal] = useState(false);
 
   const getContadores = async () => setContadores(await getContadoresConvo(convo));
   const getAplicaciones = async () => {
     const { aplicaciones, totalAplicaciones } = await getAplicacionesConvo(convo);
     setAplicaciones(aplicaciones);
     setResults(totalAplicaciones);
-  };
+  }
 
   const totalPages = Math.ceil(results / maxResultsPerPage);
   const maxButtons = Math.min(totalPages, 10);
@@ -82,11 +86,31 @@ export const Aplicaciones = () => {
     }
   };
 
-
+  const postVoluntariado = async()=>{
+    let arreglo = [];
+    for(let i=0; i<aplicaciones.length;i++){
+      console.log(aplicaciones[i]);
+      if(aplicaciones[i].admin!== null){
+        arreglo.push(aplicaciones[i].admin._id)
+      }
+      if(aplicaciones[i].voluntario!== null){
+        arreglo.push(aplicaciones[i].voluntario._id)
+      }
+    }
+    const convocatoriaList = await apiGetConvocatoriaById(convo);
+  await apiCerrarConvo(convo,arreglo,true,convocatoriaList.fecha_inicio,convocatoriaList.fecha_fin);
+  Swal.fire({
+    title: "¡Convocatoria cerrada!",
+    icon: "success",
+    confirmButtonText: "Aceptar",
+    confirmButtonColor: "#7fad39",
+  });
+  }
   return (
     <>
       <div className="container mt-5">
         <div className="row align-items-center">
+          
           <div className="col-md-4">
             <div className="mb-3">
               <h5 className="card-title">
@@ -140,41 +164,71 @@ export const Aplicaciones = () => {
                                 alt=""
                                 className="avatar-sm rounded-circle me-2"
                               />
-                              <a href="#" className="text-body">{a.voluntario.nombre}</a>
+                              <a href="#" className="text-body">
+                                {a.voluntario === null ? (a.admin.nombre):[a.voluntario.nombre]}
+                              </a>
                             </td>
-                            <td>{a.voluntario.correo}</td>
-                            <td> {formatDate(a.fecha)}, {formatTime(a.fecha)}</td>
+                            <td>{a.voluntario === null ? (a.admin.correo):[a.voluntario.correo]}</td>
+                            <td>
+                              {" "}
+                              {formatDate(a.fecha)}, {formatTime(a.fecha)}
+                            </td>
                             <td>{a.estado}</td>
                             <td>
-                              <button type="button" className="btn btn-primary">
-                                Ver documentos
-                              </button>
+                            {
+                              a.voluntario=== null ? [<p>Es un administrador</p> ]:[<button
+                                type="button"
+                                className="btn btn-primary"
+                                onClick={() => setShowModal(true)}
+                              >
+                                Ver Documentación
+                              </button>]
+                            }                          
                             </td>
+                            {
+                              a.admin === null ? [showModal && (
+                                <ModalDocumentos onClose={() => setShowModal(false) } DPI={a.voluntario.DPI} CV={a.voluntario.CV} antecedentes={a.voluntario.antecedentes}/>
+                              )]:[]
+                                
+                            }
+      
                             <td>
-                              {
-                                a.estado === 'Aceptado' || a.estado === 'Rechazado' ?
-                                  (
-                                    <div className="text-wrap"><p>Ya se tomó la decisión para este voluntario</p></div>
-                                  ) : (
-                                    <ul className="list-inline mb-0">
-                                      <li className="list-inline-item">
-                                        <button type="button" className="btn btn-success" onClick={() => aceptarCandidato(a._id)}>
-                                          Aceptar
-                                        </button>
-                                        <button type="button" className="btn btn-danger mx-1" onClick={() => rechazarCandidato(a._id)}>
-                                          Rechazar
-                                        </button>
-                                      </li>
-                                    </ul>
-                                  )
-                              }
+                              {a.estado === "Aceptado" ||
+                              a.estado === "Rechazado" ? (
+                                <div className="text-wrap">
+                                  <p>
+                                    Ya se tomó la decisión para este voluntario
+                                  </p>
+                                </div>
+                              ) : (
+                                <ul className="list-inline mb-0">
+                                  <li className="list-inline-item">
+                                    <button
+                                      type="button"
+                                      className="btn btn-success"
+                                      onClick={() => aceptarCandidato(a._id)}
+                                    >
+                                      Aceptar
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="btn btn-danger mx-1"
+                                      onClick={() => rechazarCandidato(a._id)}
+                                    >
+                                      Rechazar
+                                    </button>
+                                  </li>
+                                </ul>
+                              )}
                             </td>
                           </tr>
-                        )
+                        );
                       })
+                      
                     }
                   </tbody>
                 </table>
+                <button className= "btn btn-danger me-4" onClick={ postVoluntariado}> Cerrar Convocatoria</button>
               </div>
             </div>
           </div>
@@ -213,6 +267,8 @@ export const Aplicaciones = () => {
           </div>
         </div>
       </div>
+      <Footer/>
+      
     </>
   );
 };

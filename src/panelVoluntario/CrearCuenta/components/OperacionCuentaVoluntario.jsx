@@ -8,18 +8,19 @@ import {
   formOptions,
   formVoluntarioHelper,
 } from "../helpers/formVoluntarioHelper";
+import Swal from 'sweetalert2';
 import { useEffect } from "react";
 import { apiGetVoluntario } from "../../Perfil/api/apiVoluntario";
+import { uploadFile } from "../api/apiFile";
  
 export const OperacionCuentaVoluntario = ({ operacion }) => {
-
-   
+  const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [usuario, setUsuario] = useState(Voluntario);
-  const [option, setoption] = useState(1)
+  const [option, setoption] = useState(1);
   let showPassword = true;
   if (operacion === "Editar") {
     showPassword = false;
-  
   }
 
   const {
@@ -30,29 +31,83 @@ export const OperacionCuentaVoluntario = ({ operacion }) => {
 
   useEffect(() => {
     setUsuario({ ...usuario });
-    operacion === "Crear"? [setoption(1)]:[setoption(2),listVoluntario()]
+    operacion === "Crear" ? [setoption(1)] : [setoption(2), listVoluntario()];
   }, []);
 
   const listVoluntario = async () => {
-      const voluntario = await apiGetVoluntario();   
-      setUsuario(voluntario);
-  }
-
-  const crud = async () => {
-
-    await formVoluntarioHelper(usuario,option);
+    const voluntario = await apiGetVoluntario();
+    setUsuario(voluntario);
+    
+  
   };
+  
+  const agregarArchivos = async ()=>{
+    
+    setLoading(true);
+    let fileDpi='';
+    let fileCv='';
+    let fileAntecedentes='';
+    let photoPerfil='';
+    let photoFondo='';
+    
+
+    if(usuario.DPIFile==="si"){
+       fileDpi = await uploadFile(file.DPI);
+    }
+    if(usuario.CVFile==="si"){
+       fileCv = await uploadFile(file.CV);
+       console.log(fileCv);
+    }
+    if (usuario.antecedentesFile==="si") {
+      fileAntecedentes = await uploadFile(file.antecedentes);
+    }
+    if (usuario.fotoPerfilFile==="si") {
+      photoPerfil = await uploadFile(file.fotoPerfil);
+    }
+    if (usuario.fotoFondoFile==="si") {
+      photoFondo = await uploadFile(file.fotoFondo);
+    }
+    setLoading(false);
+    
+    await formVoluntarioHelper(usuario,fileCv,fileDpi,fileAntecedentes,photoFondo,photoPerfil, option);
+  }
+  
+  const crud = async () => {
+   
+    
+  };
+  
   const handleChange = (e) => {
     e.preventDefault();
     const nombreArchivo = e.target.name;
     const archivo = e.target.files[0];
-    console.log(archivo);
-    setUsuario((prevFormulario) => ({
+  
+    setFile((prevFormulario) => ({
       ...prevFormulario,
       [nombreArchivo]: archivo,
     }));
+    setUsuario({...usuario, [nombreArchivo+"File"]:'si'});
   };
-  console.log(usuario);
+  const loadigbar = () => {
+    let timerInterval;
+    Swal.fire({
+      title: "Cargando Informacion",
+      html: "Espere un poco",
+      timer: 10000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+    }).then((result) => {
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log("I was closed by the timer");
+      }
+    });
+  };
+  
   return (
     <>
       <NavBarSinLogeo />
@@ -102,7 +157,9 @@ export const OperacionCuentaVoluntario = ({ operacion }) => {
                             setUsuario(() => ({ ...usuario, password: value }));
                           }}
                         />
-                        {errors.password && (<span>{errors.password.message}</span>)}
+                        {errors.password && (
+                          <span>{errors.password.message}</span>
+                        )}
                         <label htmlFor="floatingEmailInput">Contraseña</label>
                       </div>
                     </div>
@@ -172,12 +229,12 @@ export const OperacionCuentaVoluntario = ({ operacion }) => {
                   <div className="col-md-5 col-sm-12">
                     <label className="my-2">Curriculum Vitae</label>
                     <div className="mb-3">
-                    <input
+                      <input
                         type="file"
                         className="form-control"
                         name="CV"
-                        id="CV" 
-                          onChange={(e) => handleChange(e)}
+                        id="CV"
+                        onChange={(e) => handleChange(e)}
                       />
                     </div>
                   </div>
@@ -188,8 +245,8 @@ export const OperacionCuentaVoluntario = ({ operacion }) => {
                         type="file"
                         className="form-control"
                         name="antecedentes"
-                            id="antecedentes"
-                            onChange={(e) => handleChange(e)}
+                        id="antecedentes"
+                        onChange={(e) => handleChange(e)}
                       />
                     </div>
                   </div>
@@ -214,8 +271,8 @@ export const OperacionCuentaVoluntario = ({ operacion }) => {
                         type="file"
                         className="form-control"
                         name="fotoPerfil"
-                            id="fotoPerfil"
-                            onChange={(e) => handleChange(e)}
+                        id="fotoPerfil"
+                        onChange={(e) => handleChange(e)}
                       />
                     </div>
                   </div>
@@ -239,7 +296,7 @@ export const OperacionCuentaVoluntario = ({ operacion }) => {
                     type="submit"
                     className="btn btn-primary"
                     style={{ borderRadius: "0px" }}
-                    onClick={crud}
+                    onClick={()=>agregarArchivos()}
                   >
                     {operacion} Cuenta
                   </button>
@@ -249,6 +306,7 @@ export const OperacionCuentaVoluntario = ({ operacion }) => {
           </div>
         </div>
       </div>
+      {loading && loadigbar()}
     </>
   );
 };
