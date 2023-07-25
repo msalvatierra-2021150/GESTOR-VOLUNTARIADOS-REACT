@@ -22,6 +22,8 @@ import { AdminAppMain } from "./panelAdminApp/AdminAppMain/AdminAppMain";
 import { PerfilMain as PerfilAdminMain} from "./panelAdminApp/Perfil/PerfilMain";
 import { OperacionCuentaAdmin } from "./panelAdminApp/OperacionAdminApp/components/OperacionCuentaAdmin";
 import { ConvocatoriasCerradas } from "./panelAdminFundacion/FundacionMain/components/ConvocatoriasCerradas";
+import { HomePage } from "./HomePage/HomePage";
+import { ListaVoluntariados } from "./panelAdminFundacion/Voluntariados/components/ListaVoluntariados";
 
 export const AppRouter = () => {
     return (
@@ -30,6 +32,8 @@ export const AppRouter = () => {
             <Routes>
                 {/* Generales*/}
                 {/* Chequea si  el usuario esta logeado o no*/}
+                <Route path="/" element= {<HomePage/>} >
+                </Route>
                 <Route path="/login" element={!isUserLogged() ? <Login/> : <Navigate to="/home" />}>
                 </Route>
                 <Route path="/cuenta" element={isAdminFundacionAuthenticated() ? <FundacionMain/> : <PerfilMain/>}>
@@ -63,7 +67,9 @@ export const AppRouter = () => {
                 <Route path="/historial-convocatorias" element={isAdminFundacionAuthenticated() ? (<ConvocatoriasCerradas />) : (<Navigate to="/login" />) } >
                 </Route>
                 <Route path="/editar-convocatoria" element={isAdminFundacionAuthenticated() ? (<EditarConvocatoria/>) : (<Navigate to="/login" />) } >
-                </Route>                   
+                </Route>  
+                <Route path="/lista-voluntariados" element={isAdminFundacionAuthenticated() ? (<ListaVoluntariados/>) : (<Navigate to="/login" />) } >
+                </Route>                  
                 
                 {/* RUTAS SOLO PARA USUARIOS*/}
                 {/* FUNCIONES DEL USUARIO AL LOGEARSE*/}

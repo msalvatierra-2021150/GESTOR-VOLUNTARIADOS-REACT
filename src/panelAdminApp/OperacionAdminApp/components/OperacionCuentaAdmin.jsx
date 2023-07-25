@@ -7,10 +7,15 @@ import {
   formOptions,
   formAdminHelper,
 } from "../helpers/formAdminHelper";
+import Swal from 'sweetalert2';
 import { Admin } from "../models/admin.models";
 import { apiGetAdmin } from "../../Perfil/api/apiAdmin";
+import { Footer } from "../../../Footer";
+import { uploadFile } from "../api/apiAdmin";
 export const OperacionCuentaAdmin = ({ operacion = "Edit" , id = ''}) => {
   let showPassword = true;
+  const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [admin, setAdmin] = useState(Admin);
   const [option, setoption] = useState(1)
   if (operacion === "Editar") {
@@ -34,21 +39,51 @@ export const OperacionCuentaAdmin = ({ operacion = "Edit" , id = ''}) => {
   }
 
   const crud = async () => {
-  
-    await formAdminHelper(admin,option);
+    console.log(file);
+    console.log(admin);
+    setLoading(true);
+    let photoPerfil='';
+      let photoFondo='';
+      if (admin.fotoPerfilFile==="si") {
+        photoPerfil = await uploadFile(file.fotoPerfil);
+      }
+      if (admin.fotoFondoFile==="si") {
+        photoFondo = await uploadFile(file.fotoFondo);
+      }
+      setLoading(false);
+    await formAdminHelper(admin,photoFondo,photoPerfil,option);
   };
   const handleChange = (e) => {
     e.preventDefault();
     const nombreArchivo = e.target.name;
     const archivo = e.target.files[0];
 
-    setAdmin((prevFormulario) => ({
+    setFile((prevFormulario) => ({
       ...prevFormulario,
       [nombreArchivo]: archivo,
     }));
+    setAdmin({...admin, [nombreArchivo+"File"]:'si'});
   };
 
-  console.log(admin);
+  const loadigbar = () => {
+    let timerInterval;
+    Swal.fire({
+      title: "Cargando Informacion",
+      html: "Espere un poco",
+      timer: 10000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+    }).then((result) => {
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log("I was closed by the timer");
+      }
+    });
+  }
   return (
     <>
       <div className="banner">
@@ -168,6 +203,8 @@ export const OperacionCuentaAdmin = ({ operacion = "Edit" , id = ''}) => {
           </div>
         </div>
       </div>
+      <Footer/>
+      {loading && loadigbar()}
     </>
   );
 };

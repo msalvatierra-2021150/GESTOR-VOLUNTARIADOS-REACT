@@ -3,7 +3,31 @@ import Swal from 'sweetalert2';
 
 const URLCC = "http://localhost:8080/api/contadoresConvo/";
 const URLA = "http://localhost:8080/api/aplicacionVoluntariado/";
+const URLV = "http://localhost:8080/api/voluntariados/";
 const token = localStorage.getItem('token');
+
+export const apiCerrarConvo = async (convocatoria_voluntariado, voluntario,estado,fechaHoraInicio,fechaHoraFin) => {
+    try {
+       
+        const response = await axios.post(`${URLV}cerrarConvo`, {
+            convocatoria_voluntariado:convocatoria_voluntariado,
+            voluntarios:voluntario,
+            estado:estado,
+            fechaHoraInicio:fechaHoraInicio,
+            fechaHoraFin:fechaHoraFin
+        });
+        const token = response.data.token;
+        //Guardar token en el almacenamiento local del navegador (Local storage)
+        (token) ? localStorage.setItem("token", token) : null;
+        return token;
+    } catch ({ response: { data: { msg } } }) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error de Login',
+            text: msg
+        });
+    }
+}
 
 export const getContadoresConvo = async (idConvo) => {
     try {

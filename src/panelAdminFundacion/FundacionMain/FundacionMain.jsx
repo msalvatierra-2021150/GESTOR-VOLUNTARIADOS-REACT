@@ -8,6 +8,7 @@ import { NuevaPublicacion } from "./components/NuevaPublicacion";
 import { useEffect } from "react";
 import { useState } from "react";
 import { apiGetFundacion } from "../CrearCuenta/api/apiFundacion";
+import { Footer } from "../../Footer";
 export const FundacionMain = () => {
   const [nuevaF, setNuevaF] = useState();
   useEffect(() => {
@@ -25,7 +26,7 @@ export const FundacionMain = () => {
       <div className="container custom-container">
         <div className="profile-page tx-13">
           <div className="row">
-          {nuevaF=== undefined ? []:[<PerfilFundacion fotoP={nuevaF.fotoPerfil} fotoF={nuevaF.fotoFondo} nombre={nuevaF.nombre} />]}
+          {nuevaF=== undefined ? []:[<PerfilFundacion fotoP={nuevaF.fotoPerfil} fotoF={nuevaF.fotoFondo} nombre={nuevaF.nombre} id ={nuevaF._id}/>]}
             
           </div>
           <div className="row profile-body">
@@ -62,6 +63,7 @@ export const FundacionMain = () => {
           </div>
         </div>
       </div>
+      <Footer/>
     </>
   );
 };

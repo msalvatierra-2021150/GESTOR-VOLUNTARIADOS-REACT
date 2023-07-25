@@ -9,18 +9,6 @@ export const apiSearchConvocatorias = async (titulo, lugar, desde, limite) => {
         if (lugar === undefined && titulo === undefined) {
             const { data: { coincidencias, registros } } = await axios.get(`${URL}mostrar-activas?desde=${desde}&limite=${limite}`,
                 { headers: { 'x-token': token } });
-                console.log(coincidencias);
-            return { coincidencias, registros };
-        }
-        if (lugar.length === 0) {
-            const { data: { coincidencias, registros } } = await axios.get(`${URL}mostrar-lugar/${titulo}?desde=${desde}&limite=${limite}`,
-                { headers: { 'x-token': token } });
-                console.log(coincidencias);
-            return { coincidencias, registros };
-        } else {
-            const { data: { coincidencias, registros } } = await axios.get(`${URL}mostrar-lugar/${lugar}/${titulo}?desde=${desde}&limite=${limite}`,
-                { headers: { 'x-token': token } });
-                console.log(coincidencias);
             return { coincidencias, registros };
         }
     } catch ({ response: { data: { msg } } }) {

@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Swal from 'sweetalert2';
 import {
   faInstagram,
   faFacebook,
@@ -15,9 +16,11 @@ import {
   formOptions,
   formFundacionHelper,
 } from "../helpers/formFundacionHelper";
-import { apiGetFundacion } from "../api/apiFundacion";
+import { apiGetFundacion, uploadFile } from "../api/apiFundacion";
 export const OperacionCuentaFundacion = ({ operacion = "Edit", id = "" }) => {
   let showPassword = true;
+  const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [nuevaF, setNuevaF] = useState(Fundacion);
   const [option, setoption] = useState(1);
 
@@ -41,7 +44,17 @@ export const OperacionCuentaFundacion = ({ operacion = "Edit", id = "" }) => {
     setNuevaF(fundacionList);
   };
   const crud = async () => {
-    await formFundacionHelper(nuevaF, option);
+    setLoading(true);
+      let photoPerfil='';
+      let photoFondo='';
+      if (nuevaF.fotoPerfilFile==="si") {
+        photoPerfil = await uploadFile(file.fotoPerfil);
+      }
+      if (nuevaF.fotoFondoFile==="si") {
+        photoFondo = await uploadFile(file.fotoFondo);
+      }
+      setLoading(false);
+    await formFundacionHelper(nuevaF,photoFondo,photoPerfil, option);
   };
 
   const handleChange = (e) => {
@@ -49,12 +62,31 @@ export const OperacionCuentaFundacion = ({ operacion = "Edit", id = "" }) => {
     const nombreArchivo = e.target.name;
     const archivo = e.target.files[0];
 
-    setNuevaF((prevFormulario) => ({
+    setFile((prevFormulario) => ({
       ...prevFormulario,
       [nombreArchivo]: archivo,
     }));
+    setNuevaF({...nuevaF, [nombreArchivo+"File"]:'si'});
   };
-  console.log(nuevaF);
+   const loadigbar = () => {
+    let timerInterval;
+    Swal.fire({
+      title: "Cargando Informacion",
+      html: "Espere un poco",
+      timer: 10000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+    }).then((result) => {
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log("I was closed by the timer");
+      }
+    });
+  };
   return (
     <>
       <NavBarSinLogeo />
@@ -308,6 +340,7 @@ export const OperacionCuentaFundacion = ({ operacion = "Edit", id = "" }) => {
           </div>
         </div>
       </div>
+      {loading && loadigbar()}
     </>
   );
 };

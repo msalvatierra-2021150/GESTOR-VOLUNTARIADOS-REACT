@@ -16,10 +16,10 @@ export const formSchema = Yup.object().shape({
 
 export const formOptions = { resolver: yupResolver(formSchema) };
 
-export const formConvocatoriaHelper = async (convocatoria, option) => {
+export const formConvocatoriaHelper = async (convocatoria,photoImg, option) => {
 
     let resultado;
-    console.log(convocatoria);
+  
     switch (option) {
         case 1:
         
@@ -32,7 +32,7 @@ export const formConvocatoriaHelper = async (convocatoria, option) => {
                 convocatoria.fechaHoraEnd,
                 convocatoria.horaInicio,
                 convocatoria.horaFinal,
-                convocatoria.imagen
+                photoImg
             )
              console.log(resultado);
             if (resultado) {
@@ -62,7 +62,7 @@ export const formConvocatoriaHelper = async (convocatoria, option) => {
                     convocatoria.fechaHoraEnd,
                     convocatoria.horaInicio,
                     convocatoria.horaFinal,
-                    convocatoria.imagen
+                    photoImg
             );
             
             if (resultado) {

@@ -5,8 +5,11 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { Convocatoria } from "../models/models.convocatoria";
 import { formConvocatoriaHelper, formOptions } from "../helpers/formConvocatoriaHelper";
- 
+import Swal from 'sweetalert2';
+import { uploadFile } from "../../CrearCuenta/api/apiFundacion";
 export const NuevaPublicacion = () => {
+  const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [nuevaC, setNuevaC] = useState(Convocatoria)
   const departamentosGuatemala = [
     "Guatemala","Baja Verapaz","Alta Verapaz","El Progreso",
@@ -21,8 +24,14 @@ export const NuevaPublicacion = () => {
     formState: { errors },
   } = useForm(formOptions);
   const crud = async () => {
+    setLoading(true);
+    let photoImg='';
+    if(nuevaC.imagenFile==="si"){
+      photoImg = await uploadFile(file.imagen);
+   }
+   setLoading(false);
 
-    await formConvocatoriaHelper(nuevaC,1);
+    await formConvocatoriaHelper(nuevaC,photoImg,1);
   };
 
   const handleChange = (e) => {
@@ -30,13 +39,32 @@ export const NuevaPublicacion = () => {
     e.preventDefault();
     const nombreArchivo = e.target.name;
     const archivo = e.target.files[0];
-    console.log(archivo);
-    setNuevaC((prevFormulario) => ({
+    setFile((prevFormulario) => ({
       ...prevFormulario,
       [nombreArchivo]: archivo,
     }));
+    setNuevaC({...nuevaC, [nombreArchivo+"File"]:'si'});
   };
-
+  const loadigbar = () => {
+    let timerInterval;
+    Swal.fire({
+      title: "Cargando Informacion",
+      html: "Espere un poco",
+      timer: 10000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+    }).then((result) => {
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log("I was closed by the timer");
+      }
+    });
+  };
+ 
   return ( 
     <>
       <div className="collapse" id="collapseExample">
@@ -57,7 +85,7 @@ export const NuevaPublicacion = () => {
               </div>
             </div>
             <div className="card-body">
-              <Form.Group controlId="exampleForm.ControlTextarea" onSubmit={handleSubmit(crud)}>
+              <Form.Group controlId="exampleForm.ControlTextarea" onSubmit={handleSubmit()}>
                 <div className="form-floating mb-3">
                   <input
                     {...register("titulo")}
@@ -128,6 +156,7 @@ export const NuevaPublicacion = () => {
                     {...register("horaInicio")}
                     type="time"
                     className="form-control"
+                    name="horaInicio"
                     value={(nuevaC.horaInicio)}
                     onChange={({ target: { value } }) => {
                         
@@ -141,6 +170,7 @@ export const NuevaPublicacion = () => {
                   <input
                     {...register("fechaHoraStart")}
                     type="date"
+                    name="fechaHoraStart"
                     className="form-control"
                     value={(nuevaC.fechaHoraInicio)}
                     onChange={({ target: { value } }) => {
@@ -156,9 +186,9 @@ export const NuevaPublicacion = () => {
                      {...register("horaFinal")}
                      type="time"
                      className="form-control"
+                     name="horaFinal"
                      value={(nuevaC.horaFinal)}
                      onChange={({ target: { value } }) => {
-                         
                          setNuevaC(() => ({ ...nuevaC,horaFinal: value }));
                      }
                      }
@@ -170,6 +200,7 @@ export const NuevaPublicacion = () => {
                   <input
                     {...register("fechaHoraEnd")}
                     type="date"
+                    name="fechaHoraEnd"
                     className="form-control"
                     value={(nuevaC.fechaHoraFin)}
                     onChange={({ target: { value } }) => {
@@ -215,6 +246,7 @@ export const NuevaPublicacion = () => {
           </div>
         </div>
       </div>
+      {loading && loadigbar()}
     </>
   );
 };

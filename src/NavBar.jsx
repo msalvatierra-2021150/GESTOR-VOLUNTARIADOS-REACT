@@ -15,7 +15,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faUser } from "@fortawesome/free-solid-svg-icons";
 
 export const NavBar = () => {
-
   const logOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
@@ -31,14 +30,41 @@ export const NavBar = () => {
               <Link to="/adminapp-main" className="centrar-logo">
                 <Image style={{ width: "55%" }} src={banco} fluid />
               </Link>
-            ) :
+            ) : (
               <Link to="/home" className="centrar-logo">
                 <Image style={{ width: "55%" }} src={banco} fluid />
               </Link>
-            }
+            )}
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="ms-auto">
+                {/*MUESTRA SI CUMPLE ROL FUNDACION*/}
+                {isAdminFundacionAuthenticated() ? (
+                  <Link
+                    to="convocatorias-fundacion"
+                    className="mx-2 d-flex align-items-center justify-content-center text-white text-nowrap"
+                  >
+                    Ver Convocatorias
+                  </Link>
+                ) : null}
+                {isAdminFundacionAuthenticated() ? (
+                  <Link
+                    to="lista-voluntariados"
+                    className="mx-2 d-flex align-items-center justify-content-center text-white text-nowrap"
+                  >
+                    Ver voluntariados
+                  </Link>
+                ) : null}
+
+                {/*MUESTRA SI CUMPLE ROL ADMIN */}
+                {isAdminAppAuthenticated() ? (
+                  <Link
+                    to="/crear-cuenta-adminapp"
+                    className="mx-2 d-flex align-items-center justify-content-center text-white text-nowrap"
+                  >
+                    Crear Administrador
+                  </Link>
+                ) : null}
                 {!isAdminAppAuthenticated() ? (
                   <form className="form-inline my-2 my-lg-0 d-flex justify-content-center">
                     <input
@@ -67,25 +93,7 @@ export const NavBar = () => {
                   </Link>
                 ) : null}
 
-                {/*MUESTRA SI CUMPLE ROL FUNDACION*/}
-                {isAdminFundacionAuthenticated() ? (
-                  <Link
-                    to="convocatorias-fundacion"
-                    className="mx-2 d-flex align-items-center justify-content-center text-white text-nowrap"
-                  >
-                    Ver Convocatorias
-                  </Link>
-                ) : null}
-
                 {/*MUESTRA SI CUMPLE ROL ADMIN */}
-                {isAdminAppAuthenticated() ? (
-                  <Link
-                    to="/crear-cuenta-adminapp"
-                    className="mx-2 d-flex align-items-center justify-content-center text-white text-nowrap"
-                  >
-                    Crear Administrador
-                  </Link>
-                ) : null}
                 {isAdminAppAuthenticated() ? (
                   <Link
                     to="cuenta-admin"

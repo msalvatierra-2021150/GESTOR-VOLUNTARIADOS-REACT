@@ -1,7 +1,7 @@
 import Swal from "sweetalert2"
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { apiPDF ,apiUpdatePDF} from "../api/apiFile";
+import { apiPostVoluntario ,apiUpdateVoluntario} from "../api/apiFile";
 
 export const formSchema = Yup.object().shape({
     nombre: Yup.string().required('El nombre es requerido'),
@@ -18,25 +18,24 @@ export const formSchema = Yup.object().shape({
 
 export const formOptions = { resolver: yupResolver(formSchema) };
 
-export const formVoluntarioHelper = async (voluntario, option) => {
-
+export const formVoluntarioHelper = async (voluntario,fileCv,fileDpi,fileAntecedentes,photoFondo,photoPerfil, option) => {
+    console.log(voluntario);
     let resultado;
- 
+    
     switch (option) {
         case 1:
         
-        resultado = await apiPDF(
+        resultado = await apiPostVoluntario(
                 voluntario.nombre,
                 voluntario.correo,
                 voluntario.password,
-                voluntario.dpi,
                 voluntario.telefono,
                 voluntario.direccion,
-                voluntario.CV,
-                voluntario.DPI,
-                voluntario.antecedentes,
-                voluntario.fotoPerfil,
-                voluntario.fotoFondo
+                fileCv,
+                fileDpi,
+                fileAntecedentes,
+                photoFondo,
+                photoPerfil
             )
              console.log(resultado);
             if (resultado) {
@@ -56,19 +55,18 @@ export const formVoluntarioHelper = async (voluntario, option) => {
             }
             break;
             case 2:
-                resultado = await apiUpdatePDF(
+                resultado = await apiUpdateVoluntario(
                 voluntario._id,
                 voluntario.nombre,
                 voluntario.correo,
                 voluntario.password,
-                voluntario.dpi,
                 voluntario.telefono,
                 voluntario.direccion,
-                voluntario.CV,
-                voluntario.DPI,
-                voluntario.antecedentes,
-                voluntario.fotoPerfil,
-                voluntario.fotoFondo
+                fileCv,
+                fileDpi,
+                fileAntecedentes,
+                photoFondo,
+                photoPerfil
             );
             
             if (resultado) {
