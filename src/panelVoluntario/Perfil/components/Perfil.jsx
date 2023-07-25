@@ -10,7 +10,7 @@ export const Perfil = ({fotoPerfil, fotoFondo, nombre}) => {
           <div className="cover">
             <figure>
               <Image
-                src={fotoPerfil}
+                src={fotoFondo}
                 alt="profile cover"
               />
             </figure>
@@ -18,7 +18,7 @@ export const Perfil = ({fotoPerfil, fotoFondo, nombre}) => {
               <div className="d-flex align-items-center">
                 <Image
                   className="profile-pic"
-                  src={fotoFondo}
+                  src={fotoPerfil}
                   alt="profile"
                 />
                 <span className="profile-name">{nombre} </span>

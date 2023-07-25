@@ -12,9 +12,10 @@ export const formSchema = Yup.object().shape({
 });
 
 export const formOptions = { resolver: yupResolver(formSchema) };
-export const formAdminHelper = async (admin, option) => {
+export const formAdminHelper = async (admin, photoFondo,photoPerfil,option) => {
     let resultado;
-
+    console.log(photoFondo);
+    console.log(photoPerfil);
     switch (option) {
         case 1:
         
@@ -22,8 +23,8 @@ export const formAdminHelper = async (admin, option) => {
                 admin.nombre,
                 admin.correo,
                 admin.password,
-                admin.fotoPerfil,
-                admin.fotoFondo
+                photoFondo,
+                photoPerfil
             )
              
             if (resultado) {
@@ -48,8 +49,8 @@ export const formAdminHelper = async (admin, option) => {
                 admin.nombre,
                 admin.correo,
                 admin.password,
-                admin.fotoPerfil,
-                admin.fotoFondo
+                photoFondo,
+                photoPerfil
             );
             
             if (resultado) {

@@ -12,9 +12,12 @@ import banco from "./img/logo-dark.png";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
+import { BusquedaUser } from "./BusquedaUser";
 
 export const NavBar = () => {
+  const [term, setTerm] = useState("");
 
   const logOut = () => {
     localStorage.removeItem("token");
@@ -39,23 +42,9 @@ export const NavBar = () => {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="ms-auto">
-                {!isAdminAppAuthenticated() ? (
-                  <form className="form-inline my-2 my-lg-0 d-flex justify-content-center">
-                    <input
-                      className="form-control mr-sm-2"
-                      type="search"
-                      placeholder="Buscar fundaciones..."
-                      aria-label="Search"
-                    />
-                    <Button
-                      className="btn btn-outline-success my-sm-0"
-                      type="submit"
-                    >
-                      <FontAwesomeIcon icon={faMagnifyingGlass} />
-                    </Button>
-                  </form>
+                {isVoluntarioAuthenticated() || isAdminAppAuthenticated() ? (
+                  <BusquedaUser termino={term} setTermino={setTerm} />
                 ) : null}
-
                 {/*MUESTRA SI CUMPLE ROL VOLUNTARIO*/}
                 {isVoluntarioAuthenticated() ? (
                   <Link

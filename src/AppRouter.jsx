@@ -8,6 +8,7 @@ import { isAdminAppAuthenticated, isUserLogged, isVoluntarioAuthenticated, isAdm
 import { VoluntarioMain } from "./panelVoluntario/VoluntarioMain/VoluntarioMain";
 import { OperacionCuentaVoluntario } from "./panelVoluntario/CrearCuenta/components/OperacionCuentaVoluntario";
 import { PerfilMain } from "./panelVoluntario/Perfil/PerfilMain";
+import { SearchResults } from "./SearchResults";
 
 //IMPORTACIONES FUNDACION
 import { FundacionMain } from "./panelAdminFundacion/FundacionMain/FundacionMain";
@@ -22,6 +23,7 @@ import { AdminAppMain } from "./panelAdminApp/AdminAppMain/AdminAppMain";
 import { PerfilMain as PerfilAdminMain} from "./panelAdminApp/Perfil/PerfilMain";
 import { OperacionCuentaAdmin } from "./panelAdminApp/OperacionAdminApp/components/OperacionCuentaAdmin";
 import { ConvocatoriasCerradas } from "./panelAdminFundacion/FundacionMain/components/ConvocatoriasCerradas";
+import { HomePage } from "./HomePage/HomePage";
 
 export const AppRouter = () => {
     return (
@@ -30,6 +32,8 @@ export const AppRouter = () => {
             <Routes>
                 {/* Generales*/}
                 {/* Chequea si  el usuario esta logeado o no*/}
+                <Route path="/" element= {<HomePage/>} >
+                </Route>
                 <Route path="/login" element={!isUserLogged() ? <Login/> : <Navigate to="/home" />}>
                 </Route>
                 <Route path="/cuenta" element={isAdminFundacionAuthenticated() ? <FundacionMain/> : <PerfilMain/>}>
@@ -38,7 +42,7 @@ export const AppRouter = () => {
                 </Route>
                 <Route path="/crear-cuenta-fundacion" element={!isUserLogged() ? (<OperacionCuentaFundacion operacion="Crear"/>) : (<Navigate to="/login" />) } >
                 </Route>
-
+                
                 {/*
                 {/* RUTAS SOLO PARA ADMIN_APP*/}
                 {/* FUNCIONES DEL ADMIN_APP EN HOTEL*/}
@@ -70,6 +74,8 @@ export const AppRouter = () => {
                 <Route path="/home" element={isVoluntarioAuthenticated() ? (<VoluntarioMain/>) : (<FundacionMain/>) } >
                 </Route>
                 <Route path="/editar-cuenta" element={isVoluntarioAuthenticated() ? (<OperacionCuentaVoluntario operacion="Editar"/>) : (<Login/>) } >
+                </Route>
+                <Route path="/search" element={isVoluntarioAuthenticated() || isAdminFundacionAuthenticated() ? (<SearchResults />) : (<Login/>) } > 
                 </Route>
 
             </Routes>

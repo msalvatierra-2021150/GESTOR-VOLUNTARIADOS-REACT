@@ -5,8 +5,11 @@ import { useForm } from "react-hook-form";
 import { formConvocatoriaHelper,formOptions } from "../../FundacionMain/helpers/formConvocatoriaHelper";
 import { Convocatoria } from "../../FundacionMain/models/models.convocatoria";
 import { apiGetConvocatoriaById } from "../../FundacionMain/api/apiConvocatoria";
+import { uploadFile } from "../../CrearCuenta/api/apiFundacion";
 export const EditarConvocatoria = ({objetos}) => {
   const [nuevaC, setNuevaC] = useState(Convocatoria)
+  const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
   const departamentosGuatemala = [
     "Guatemala","Baja Verapaz","Alta Verapaz","El Progreso",
     "Izabal","Zacapa","Chiquimula","Santa Rosa","Jalapa",
@@ -30,22 +33,48 @@ export const EditarConvocatoria = ({objetos}) => {
     formState: { errors },
   } = useForm(formOptions);
 
-  const crud = async (data) => {
-   
-    await formConvocatoriaHelper(nuevaC,2);
+  const crud = async () => {
+    setLoading(true);
+    let photoImg='';
+    if(nuevaC.imagenFile==="si"){
+      photoImg = await uploadFile(file.imagen);
+   }
+    setLoading(false);
+
+    await formConvocatoriaHelper(nuevaC,photoImg,2);
+
   };
   const handleChange = (e) => {
 
     e.preventDefault();
     const nombreArchivo = e.target.name;
     const archivo = e.target.files[0];
-    console.log(archivo);
-    setNuevaC((prevFormulario) => ({
+    setFile((prevFormulario) => ({
       ...prevFormulario,
       [nombreArchivo]: archivo,
     }));
+    setNuevaC({...nuevaC, [nombreArchivo+"File"]:'si'});
   };
-  
+  const loadigbar = () => {
+    let timerInterval;
+    Swal.fire({
+      title: "Cargando Informacion",
+      html: "Espere un poco",
+      timer: 10000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+    }).then((result) => {
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log("I was closed by the timer");
+      }
+    });
+  };
+  console.log(nuevaC);
   return ( 
     <>
       <div className="banner">
@@ -148,6 +177,7 @@ export const EditarConvocatoria = ({objetos}) => {
                     <input
                     {...register("horaInicio")}
                     type="time"
+                    name="horaInicio"
                     className="form-control"
                    value={nuevaC.fecha_inicio === undefined ? []:(nuevaC.fecha_inicio).substr(11, 5)}
                     onChange={({ target: { value } }) => {
@@ -164,6 +194,7 @@ export const EditarConvocatoria = ({objetos}) => {
                     <input
                     {...register("fechaHoraStart")}
                     type="date"
+                    name="fechaHoraStart"
                     className="form-control"
                     value={nuevaC.fecha_inicio === undefined ? []:(nuevaC.fecha_inicio).substr(0, 10)}
                     onChange={({ target: { value } }) => {
@@ -182,6 +213,7 @@ export const EditarConvocatoria = ({objetos}) => {
                     <input
                      {...register("horaFinal")}
                      type="time"
+                     name="horaFinal"
                      className="form-control"
                      value={nuevaC.fecha_fin === undefined ? []:(nuevaC.fecha_fin).substr(11, 5)}
                      onChange={({ target: { value } }) => {
@@ -199,6 +231,7 @@ export const EditarConvocatoria = ({objetos}) => {
                     {...register("fechaHoraEnd")}
                     type="date"
                     className="form-control"
+                    name="fechaHoraEnd"
                     value={nuevaC.fecha_fin === undefined ? []:(nuevaC.fecha_fin).substr(0, 10)}
                     onChange={({ target: { value } }) => {
                         setNuevaC(() => ({ ...nuevaC,fechaHoraEnd: value }));
@@ -260,6 +293,7 @@ export const EditarConvocatoria = ({objetos}) => {
           </div>
         </div>
       </div>
+      {loading && loadigbar()}
     </>
   );
 };

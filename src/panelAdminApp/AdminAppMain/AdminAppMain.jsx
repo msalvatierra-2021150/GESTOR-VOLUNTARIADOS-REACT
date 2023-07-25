@@ -4,6 +4,7 @@ import { Buscadores } from './components/Buscadores/components/Buscadores'
 import { PublicacionesFundacion } from './components/PublicacionesFundacion'
 import { FundacionesRecientes } from './components/FundacionesRecientes'
 import { AplicacionesRealizadas } from './components/AplicacionesRealizadas'
+import { Footer } from '../../Footer'
 
 export const AdminAppMain = () => {
   return (
@@ -43,6 +44,7 @@ export const AdminAppMain = () => {
           </div>
         </div>
       </div>
+      <Footer/>
     </>
   )
 }

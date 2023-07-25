@@ -1,11 +1,60 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import banco from "../../../img/logo.png";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import { Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { apiFundacionDelete } from "../api/apiFundaciones";
+import Swal from 'sweetalert2';
 
-export const PerfilFundacion = ({fotoP , fotoF, nombre}) => {
+export const PerfilFundacion = ({fotoP , fotoF, nombre, id}) => {
  
+  const eliminarFundacion= async (id) => {
+    let result = await apiFundacionDelete(id);
+    if (result) {
+      Swal.fire({
+        icon: "success",
+        title: "Fundacion Eliminado",
+        text: "Se ha eliminado correctamente",
+        showConfirmButton: true,
+        confirmButtonText: "Ok",
+        
+      }).then((result) => {
+        if (result.isConfirmed) {
+            localStorage.removeItem("token");
+            window.location.href = '/login';
+        }
+    });
+    } else {
+      Swal.fire({
+        icon: "info",
+        title: "Error",
+        text: "No se ha podido eliminar",
+        showConfirmButton: true,
+        confirmButtonText: "Ok",
+      }).then((result) => {
+        if (result.isConfirmed) {
+            localStorage.removeItem("token");
+            window.location.href = '/login';
+        }
+    });
+    }
+  }
+  const [show, setShow] = useState(false);
+  const [idUsuarioAEliminar, setidUsuarioAEliminar] = useState('')
+
+  const handleClose = () => {
+    setShow(false)
+  };
+
+  const handleShow = (usuarioId) => {
+    setShow(true);
+    setidUsuarioAEliminar(usuarioId);
+  };
+
+
   return (
     <>
       <div className="col-12 grid-margin mt-5">
@@ -42,7 +91,7 @@ export const PerfilFundacion = ({fotoP , fotoF, nombre}) => {
                   Nueva convocatoria
                 </button>
                 <Link
-                  className="btn btn-primary btn-icon-text btn-edit-profile mx-3"
+                  className="btn btn-warning btn-icon-text btn-edit-profile mx-3"
                   to="/editar-cuenta-fundacion"
                 >
                   <svg
@@ -62,6 +111,14 @@ export const PerfilFundacion = ({fotoP , fotoF, nombre}) => {
                   </svg>{" "}
                   Editar perfil
                 </Link>
+                <button
+                  className="btn btn-danger me-4"
+                  type="button"
+                  onClick={() => handleShow(id)}
+                >
+                  <FontAwesomeIcon icon={faPlus}  className="mx-1"/>
+                  Eliminar mi cuenta
+                </button>
               </div>
             </div>
           </div>
@@ -70,6 +127,25 @@ export const PerfilFundacion = ({fotoP , fotoF, nombre}) => {
           </div>
         </div>
       </div>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>ELiminación de cuenta</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="mb-0">
+          <div className="d-flex justify-content-center">
+            <Image style={{ width: "55%" }} src={banco} fluid />
+          </div>
+          <p className="fw-semibold text-center">¿Deseas eliminar tu cuenta?</p>
+          <p className="fw-light text-center">Esta acción es irreversible y una vez eliminada tu cuenta, no podrás recuperar la misma.</p></Modal.Body>
+        <Modal.Footer className="d-flex justify-content-center">
+        <Button variant="danger" className="w-25" onClick={() => (eliminarFundacion(idUsuarioAEliminar))}>
+            Eliminar
+          </Button>
+          <Button variant="success" className="w-25" onClick={handleClose}>
+            Cancelar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

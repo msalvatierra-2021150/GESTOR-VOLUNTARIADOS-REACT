@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from "react";
+import banco from "../../img/logo.png";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import { Image } from "react-bootstrap";
 import { Perfil } from "./components/Perfil";
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,6 +10,7 @@ import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { apiGetPdfArchivo, apiGetVoluntario, apiVoluntarioDelete } from "./api/apiVoluntario";
 import Swal from 'sweetalert2'; 
+import { Footer } from "../../Footer";
 export const PerfilMain = () => {
   const [usuario, setUsuario] = useState([])
   const viewVoluntarioList = async () => {
@@ -19,11 +24,8 @@ export const PerfilMain = () => {
 
   const VisualizarPdf = async (nombreArchivo) => {
    
-
     try {
-      const archivoBlob = await apiGetPdfArchivo(nombreArchivo);
-
-      window.open(archivoBlob, "_blank");
+      window.open(nombreArchivo, "_blank");
     } catch (error) {
       console.error("Error al descargar o mostrar el archivo:", error);
     }
@@ -59,6 +61,19 @@ export const PerfilMain = () => {
     });
     }
   };
+
+  const [show, setShow] = useState(false);
+  const [idUsuarioAEliminar, setidUsuarioAEliminar] = useState('')
+
+  const handleClose = () => {
+    setShow(false)
+  };
+
+  const handleShow = (usuarioId) => {
+    setShow(true);
+    setidUsuarioAEliminar(usuarioId);
+  };
+
 
   return (
     <>
@@ -186,7 +201,7 @@ export const PerfilMain = () => {
                       </label>
                     </div> 
                     <div>
-                      <a onClick={()=>eliminarVoluntario(usuario._id)} className="text-decoration-underline">Eliminar mi cuenta</a>
+                      <a onClick={()=> handleShow(usuario._id)} className="text-decoration-underline text-danger">Eliminar mi cuenta</a>
                     </div>
                   </div>
                 </div>
@@ -195,6 +210,26 @@ export const PerfilMain = () => {
           </div>
         </div>
       </div>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>ELiminación de cuenta</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="mb-0">
+          <div className="d-flex justify-content-center">
+            <Image style={{ width: "55%" }} src={banco} fluid />
+          </div>
+          <p className="fw-semibold text-center">¿Deseas eliminar tu cuenta?</p>
+          <p className="fw-light text-center">Esta acción es irreversible y una vez eliminada tu cuenta, no podrás recuperar la misma.</p></Modal.Body>
+        <Modal.Footer className="d-flex justify-content-center">
+        <Button variant="danger" className="w-25" onClick={() => (eliminarVoluntario(idUsuarioAEliminar))}>
+            Eliminar
+          </Button>
+          <Button variant="success" className="w-25" onClick={handleClose}>
+            Cancelar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Footer/>
     </>
   );
 };

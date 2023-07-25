@@ -5,6 +5,8 @@ import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons
 import { getContadoresConvo, getAplicacionesConvo, aceptarAplicacion, rechazarAplicacion } from "../api/apiAplicaciones";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
+import { Footer } from "../../../Footer";
+import { ModalDocumentos } from "./ModalDocumentos";
 
 export const Aplicaciones = () => {
   let { search } = useLocation();
@@ -12,13 +14,14 @@ export const Aplicaciones = () => {
   let convo = query.get('id_convocatoria');
   const maxResultsPerPage = 10;
   const [results, setResults] = useState(0);
+  const [showModal, setShowModal] = useState(false);
 
   const getContadores = async () => setContadores(await getContadoresConvo(convo));
   const getAplicaciones = async () => {
     const { aplicaciones, totalAplicaciones } = await getAplicacionesConvo(convo);
     setAplicaciones(aplicaciones);
     setResults(totalAplicaciones);
-  };
+  }
 
   const totalPages = Math.ceil(results / maxResultsPerPage);
   const maxButtons = Math.min(totalPages, 10);
@@ -81,8 +84,8 @@ export const Aplicaciones = () => {
       getAplicaciones();
     }
   };
-
-
+  console.log(aplicaciones.voluntario);
+  console.log(showModal);
   return (
     <>
       <div className="container mt-5">
@@ -140,38 +143,65 @@ export const Aplicaciones = () => {
                                 alt=""
                                 className="avatar-sm rounded-circle me-2"
                               />
-                              <a href="#" className="text-body">{a.voluntario.nombre}</a>
+                              <a href="#" className="text-body">
+                                {a.voluntario.nombre}
+                              </a>
                             </td>
                             <td>{a.voluntario.correo}</td>
-                            <td> {formatDate(a.fecha)}, {formatTime(a.fecha)}</td>
+                            <td>
+                              {" "}
+                              {formatDate(a.fecha)}, {formatTime(a.fecha)}
+                            </td>
                             <td>{a.estado}</td>
                             <td>
-                              <button type="button" className="btn btn-primary">
-                                Ver documentos
+                              <button
+                                type="button"
+                                className="btn btn-primary"
+                                onClick={() => setShowModal(true)}
+                              >
+                                Ver Documentación
                               </button>
                             </td>
+                            {
+                              showModal && (
+                                <ModalDocumentos onClose={() => setShowModal(false) } DPI={a.voluntario.DPI} CV={a.voluntario.CV} antecedentes={a.voluntario.antecedentes}/>
+                              )
+                            }
+          
+      
                             <td>
-                              {
-                                a.estado === 'Aceptado' || a.estado === 'Rechazado' ?
-                                  (
-                                    <div className="text-wrap"><p>Ya se tomó la decisión para este voluntario</p></div>
-                                  ) : (
-                                    <ul className="list-inline mb-0">
-                                      <li className="list-inline-item">
-                                        <button type="button" className="btn btn-success" onClick={() => aceptarCandidato(a._id)}>
-                                          Aceptar
-                                        </button>
-                                        <button type="button" className="btn btn-danger mx-1" onClick={() => rechazarCandidato(a._id)}>
-                                          Rechazar
-                                        </button>
-                                      </li>
-                                    </ul>
-                                  )
-                              }
+                              {a.estado === "Aceptado" ||
+                              a.estado === "Rechazado" ? (
+                                <div className="text-wrap">
+                                  <p>
+                                    Ya se tomó la decisión para este voluntario
+                                  </p>
+                                </div>
+                              ) : (
+                                <ul className="list-inline mb-0">
+                                  <li className="list-inline-item">
+                                    <button
+                                      type="button"
+                                      className="btn btn-success"
+                                      onClick={() => aceptarCandidato(a._id)}
+                                    >
+                                      Aceptar
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="btn btn-danger mx-1"
+                                      onClick={() => rechazarCandidato(a._id)}
+                                    >
+                                      Rechazar
+                                    </button>
+                                  </li>
+                                </ul>
+                              )}
                             </td>
                           </tr>
-                        )
+                        );
                       })
+                      
                     }
                   </tbody>
                 </table>
@@ -213,6 +243,8 @@ export const Aplicaciones = () => {
           </div>
         </div>
       </div>
+      <Footer/>
+      
     </>
   );
 };

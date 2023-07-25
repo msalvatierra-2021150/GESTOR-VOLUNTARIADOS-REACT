@@ -2,7 +2,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 const token = localStorage.getItem("token");
 
-export const apiAplicacionDeVoluntario = async (id) => {
+export const apiAplicacionDelAdmin = async (id) => {
 
     try {  
         const URL = `http://localhost:8080/api/aplicacionVoluntariado/aplicar/${id}`;
@@ -20,7 +20,7 @@ export const apiAplicacionDeVoluntario = async (id) => {
     }
 }
 
-export const apiGetAplicacionesDelVoluntario = async () => {
+export const apiGetAplicacionesDelAdmin = async () => {
     try {  
         const URL = `http://localhost:8080/api/aplicacionVoluntariado/mostrar-voluntario`;
 
