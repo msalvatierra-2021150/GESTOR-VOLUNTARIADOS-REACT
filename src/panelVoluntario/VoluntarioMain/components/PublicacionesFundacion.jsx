@@ -114,6 +114,7 @@ export const PublicacionesFundacion = () => {
       });
     }
   };
+
   return (
     <>
       {!dataContext.searchData.search ? (

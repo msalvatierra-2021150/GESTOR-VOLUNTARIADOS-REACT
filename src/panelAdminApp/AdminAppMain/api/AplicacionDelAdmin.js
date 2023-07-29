@@ -5,7 +5,7 @@ const token = localStorage.getItem("token");
 export const apiAplicacionDelAdmin = async (id) => {
 
     try {  
-        const URL = `http://localhost:8080/api/aplicacionVoluntariado/aplicar/${id}`;
+        const URL = `https://backend-volunteer360-fi00ose6q-msalvatierra-2021150.vercel.app/api/aplicacionVoluntariado/aplicar/${id}`;
 
         const response = await axios.post( URL , {}, {
             headers:{"x-token": token}
@@ -22,7 +22,7 @@ export const apiAplicacionDelAdmin = async (id) => {
 
 export const apiGetAplicacionesDelAdmin = async () => {
     try {  
-        const URL = `http://localhost:8080/api/aplicacionVoluntariado/mostrar-voluntario`;
+        const URL = `https://backend-volunteer360-fi00ose6q-msalvatierra-2021150.vercel.app/api/aplicacionVoluntariado/mostrar-voluntario`;
 
         const { data: { aplicaciones } } = await axios.get( URL , {
             headers:{"x-token": token}

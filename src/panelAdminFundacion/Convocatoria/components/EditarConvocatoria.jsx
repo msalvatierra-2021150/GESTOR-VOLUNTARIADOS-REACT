@@ -78,7 +78,7 @@ export const EditarConvocatoria = ({objetos}) => {
   const loadigbar = () => {
     let timerInterval;
     Swal.fire({
-      title: "Cargando Informacion",
+      title: "Cargando información",
       html: "Espere un poco",
       timer: 10000,
       timerProgressBar: true,

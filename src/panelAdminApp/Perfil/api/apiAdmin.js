@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 
 const token = localStorage.getItem('token');
 
-const URL = "http://localhost:8080/api/admin/";
+const URL = "https://backend-volunteer360-fi00ose6q-msalvatierra-2021150.vercel.app/api/admin/";
 
 export const apiGetAdmin = async () => {
     try {

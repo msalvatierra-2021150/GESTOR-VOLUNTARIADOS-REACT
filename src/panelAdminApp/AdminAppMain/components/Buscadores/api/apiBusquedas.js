@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-const URL = "http://localhost:8080/api/";
+const URL = "https://backend-volunteer360-fi00ose6q-msalvatierra-2021150.vercel.app/api/";
 const token = localStorage.getItem('token');
 
 export const apiSearchFundaciones = async (nombreFundacion, desde, limite) => {

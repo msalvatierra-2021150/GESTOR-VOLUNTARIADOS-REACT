@@ -8,6 +8,7 @@ import { isAdminAppAuthenticated, isUserLogged, isVoluntarioAuthenticated, isAdm
 import { VoluntarioMain } from "./panelVoluntario/VoluntarioMain/VoluntarioMain";
 import { OperacionCuentaVoluntario } from "./panelVoluntario/CrearCuenta/components/OperacionCuentaVoluntario";
 import { PerfilMain } from "./panelVoluntario/Perfil/PerfilMain";
+import { SearchResults } from "./SearchResults";
 
 //IMPORTACIONES FUNDACION
 import { FundacionMain } from "./panelAdminFundacion/FundacionMain/FundacionMain";
@@ -42,7 +43,7 @@ export const AppRouter = () => {
                 </Route>
                 <Route path="/crear-cuenta-fundacion" element={!isUserLogged() ? (<OperacionCuentaFundacion operacion="Crear"/>) : (<Navigate to="/login" />) } >
                 </Route>
-
+                
                 {/*
                 {/* RUTAS SOLO PARA ADMIN_APP*/}
                 {/* FUNCIONES DEL ADMIN_APP EN HOTEL*/}
@@ -76,6 +77,8 @@ export const AppRouter = () => {
                 <Route path="/home" element={isVoluntarioAuthenticated() ? (<VoluntarioMain/>) : (<FundacionMain/>) } >
                 </Route>
                 <Route path="/editar-cuenta" element={isVoluntarioAuthenticated() ? (<OperacionCuentaVoluntario operacion="Editar"/>) : (<Login/>) } >
+                </Route>
+                <Route path="/search" element={isVoluntarioAuthenticated() || isAdminFundacionAuthenticated() ? (<SearchResults />) : (<Login/>) } > 
                 </Route>
 
             </Routes>

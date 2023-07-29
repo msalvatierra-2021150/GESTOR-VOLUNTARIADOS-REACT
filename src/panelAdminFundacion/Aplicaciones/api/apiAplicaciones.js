@@ -1,9 +1,9 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-const URLCC = "http://localhost:8080/api/contadoresConvo/";
-const URLA = "http://localhost:8080/api/aplicacionVoluntariado/";
-const URLV = "http://localhost:8080/api/voluntariados/";
+const URLCC = "https://backend-volunteer360-fi00ose6q-msalvatierra-2021150.vercel.app/api/contadoresConvo/";
+const URLA = "https://backend-volunteer360-fi00ose6q-msalvatierra-2021150.vercel.app/api/aplicacionVoluntariado/";
+const URLV = "https://backend-volunteer360-fi00ose6q-msalvatierra-2021150.vercel.app/api/voluntariados/";
 const token = localStorage.getItem('token');
 
 export const apiCerrarConvo = async (convocatoria_voluntariado, voluntario,estado,fechaHoraInicio,fechaHoraFin) => {

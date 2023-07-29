@@ -5,7 +5,7 @@ const token = localStorage.getItem("token");
 export const apiGetUsuarioLogeado = async () => {
 
     try {  
-        const URL = `http://localhost:8080/api/voluntario/voluntarioById`;
+        const URL = `https://backend-volunteer360-fi00ose6q-msalvatierra-2021150.vercel.app/api/voluntario/voluntarioById`;
 
         const { data: {voluntario} } = await axios.get( URL , {
             headers:{"x-token": token}

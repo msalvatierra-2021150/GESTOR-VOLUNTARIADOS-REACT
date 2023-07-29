@@ -370,3 +370,27 @@ a {
 .nuevo:hover {
     text-decoration: underline;
 }
+
+@media (max-width: 768px) {
+    .margin-b-tel{
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .margin-t-tel{
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 550px) {
+    .account-buttons-main {
+        display: none!important;  
+    }
+}
+
+@media (min-width: 500px) {
+    .account-buttons {
+        display: none !important;
+    }
+}

@@ -44,7 +44,7 @@ export const NuevaPublicacion = () => {
     const data = {search : false, nombreDep, termino};
     dataContext.setSearchData(data);
   };
-
+  
   return (
     <>
       <div className="card rounded">

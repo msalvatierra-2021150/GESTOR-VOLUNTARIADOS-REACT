@@ -6,7 +6,7 @@ import { v4 } from 'uuid'
 
 const token = localStorage.getItem('token');
 
-const URL = "http://localhost:8080/api/adminFundacion/";
+const URL = "https://backend-volunteer360-fi00ose6q-msalvatierra-2021150.vercel.app/api/adminFundacion/";
 //key de proyecto en firebase web
 //cambiar esto si quisieran usar otra 
 const firebaseConfig = {

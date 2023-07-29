@@ -77,10 +77,10 @@ export const PerfilFundacion = ({fotoP , fotoF, nombre, id}) => {
                  {nombre}
                 </span>
               </div>
-              <div className="d-none d-md-block">
+              <div className="d-flex justify-content-center flex-sm-row account-buttons-main">
                 {/*El Boton es para triggear el collapse de Convocatoria */}
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-primary btn-auto"
                   type="button"
                   data-bs-toggle="collapse"
                   data-bs-target="#collapseExample"
@@ -91,7 +91,7 @@ export const PerfilFundacion = ({fotoP , fotoF, nombre, id}) => {
                   Nueva convocatoria
                 </button>
                 <Link
-                  className="btn btn-warning btn-icon-text btn-edit-profile mx-3"
+                  className="btn btn-warning mx-3 btn-auto"
                   to="/editar-cuenta-fundacion"
                 >
                   <svg
@@ -112,7 +112,7 @@ export const PerfilFundacion = ({fotoP , fotoF, nombre, id}) => {
                   Editar perfil
                 </Link>
                 <button
-                  className="btn btn-danger me-4"
+                  className="btn btn-danger me-4 btn-auto"
                   type="button"
                   onClick={() => handleShow(id)}
                 >
@@ -126,6 +126,52 @@ export const PerfilFundacion = ({fotoP , fotoF, nombre, id}) => {
             <ul className="links d-flex align-items-center mt-3 mt-md-0 pb-5"></ul>
           </div>
         </div>
+        <div className="container account-buttons">
+        <div className=" mt-2">
+                {/*BOTONES PARA SCREENS DE CELULAR */}
+                <button
+                  className="btn btn-primary w-100 my-2"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseExample"
+                  aria-expanded="false"
+                  aria-controls="collapseExample"
+                >
+                  <FontAwesomeIcon icon={faPlus}  className="mx-1"/>
+                  Nueva convocatoria
+                </button>
+                <Link
+                  className="btn btn-warning w-100"
+                  to="/editar-cuenta-fundacion"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="feather feather-edit btn-icon-prepend"
+                  >
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                  </svg>{" "}
+                  Editar perfil
+                </Link>
+                <button
+                  className="btn btn-danger w-100 mt-2"
+                  type="button"
+                  onClick={() => handleShow(id)}
+                >
+                  <FontAwesomeIcon icon={faPlus}  className="mx-1"/>
+                  Eliminar mi cuenta
+                </button>
+              </div>
+        </div>
+
       </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
