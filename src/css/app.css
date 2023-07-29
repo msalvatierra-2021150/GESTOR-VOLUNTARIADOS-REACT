@@ -8,7 +8,7 @@
 }
 
 .bg-image {
-  background-image: url('../img/voluntariado.png');
+  background-image: url('/src/img/voluntariado.png');
   background-size: cover;
   background-position: center center;
 }

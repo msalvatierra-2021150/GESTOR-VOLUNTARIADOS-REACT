@@ -7,7 +7,7 @@ import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { apiAdminDelete, apiGetAdmin } from "./api/apiAdmin";
 import Swal from 'sweetalert2';
-import banco from "../../img/logo.png";
+import banco from "/src/img/logo.png";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Image } from "react-bootstrap";

@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Image from 'react-bootstrap/Image';
-import logo from "./img/logo-dark.png";
+import logo from "/src/img/logo-dark.png";
 import { Link } from "react-router-dom";
 
 export const NavBarSinLogeo = () => {

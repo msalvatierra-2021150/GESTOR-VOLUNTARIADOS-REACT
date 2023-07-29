@@ -11,7 +11,7 @@ import { apiSearchConvocatorias } from "../api/apiConvocatorias";
 import { apiAplicacionDeVoluntario } from "../api/AplicacionDeVoluntario";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import banco from "../../../img/logo.png";
+import banco from "/src/img/logo.png";
 import Swal from 'sweetalert2';
 
 export const PublicacionesFundacion = () => {

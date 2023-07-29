@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye} from "@fortawesome/free-solid-svg-icons";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import banco from "../../../img/logo.png";
+import banco from "/src/img/logo.png";
 
 export const AplicacionesRealizadas = () => {
   const [aplicaciones, setAplicaciones] = useState([]);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import banco from "../../../img/logo.png";
+import banco from "/src/img/logo.png";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Image } from "react-bootstrap";

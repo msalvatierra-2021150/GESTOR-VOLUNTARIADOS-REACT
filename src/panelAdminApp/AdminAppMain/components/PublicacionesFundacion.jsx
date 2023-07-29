@@ -10,7 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import banco from "../../../img/logo.png";
+import banco from "/src/img/logo.png";
 import Swal from 'sweetalert2';
 import { apiSearchConvocatorias } from "../../../panelVoluntario/VoluntarioMain/api/apiConvocatorias";
 import { apiAplicacionDelAdmin } from "../api/AplicacionDelAdmin";
