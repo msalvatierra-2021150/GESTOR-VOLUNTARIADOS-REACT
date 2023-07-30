@@ -132,7 +132,8 @@ export const apiPostFundacion = async ( nombre,acerca_de,correo,password,sitio_w
         }
     }
 }
-export const apiUpdateFundacion = async (id, nombre,acerca_de,correo,password,sitio_web,telefono,direccion,horarios,fotoPerfil,fotoFondo,facebook,instagram,twitter) => {
+
+export const apiUpdateFundacion = async (id, nombre,acerca_de,correo,password,sitio_web,telefono,direccion,horarios,fotoFondo,fotoPerfil,facebook,instagram,twitter) => {
     try {
        const userSavecv = await axios.put(`${URL}editar`,{
               id:id,
@@ -182,6 +183,4 @@ export const apiUpdateFundacion = async (id, nombre,acerca_de,correo,password,si
            });
        }
    }
-
-
 }
