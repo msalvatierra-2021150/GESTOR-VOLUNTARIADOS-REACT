@@ -73,7 +73,7 @@ export const OperacionCuentaFundacion = ({ operacion = "Edit", id = "" }) => {
     Swal.fire({
       title: "Cargando información",
       html: "Espere un poco",
-      timer: 10000,
+      timer: 20000,
       timerProgressBar: true,
       didOpen: () => {
         Swal.showLoading();

@@ -81,7 +81,7 @@ export const apiGetConvocatoria = async () => {
 }
 
 export const apiPostConvocatoria = async (titulo,descripcion,lugar,cupo,fechaHoraStart,fechaHoraEnd,horaInicio,horaFinal,photoImg) => {
-    
+
 
     try {
         
@@ -90,10 +90,10 @@ export const apiPostConvocatoria = async (titulo,descripcion,lugar,cupo,fechaHor
                 descripcion:descripcion,
                 lugar:lugar,
                 cupo:cupo,
-                fechaHoraStart:fechaHoraStart,
-                fechaHoraEnd:fechaHoraEnd,
-                horaInicio:horaInicio,
-                horaFinal:horaFinal,
+                fechaHoraStart,
+                fechaHoraEnd,
+                horaInicio,
+                horaFinal,
                 imagen:photoImg
         },
         { headers: { "x-token": token } });

@@ -24,6 +24,22 @@ export const NuevaPublicacion = () => {
     formState: { errors },
   } = useForm(formOptions);
   const crud = async () => {
+    let horaInicioInput;
+    let fechaHoraStartInput;
+    let horaFinalInput;
+    let fechaHoraEndInput
+    if(nuevaC.horaInicio===undefined){
+      horaInicioInput = document.getElementsByName("horaInicio")[0].value;
+    }
+    if(nuevaC.fechaHoraStart===undefined){
+       fechaHoraStartInput = document.getElementsByName("fechaHoraStart")[0].value;
+    }
+    if(nuevaC.horaFinal===undefined){
+       horaFinalInput = document.getElementsByName("horaFinal")[0].value;
+    }
+    if(nuevaC.fechaHoraEnd===undefined){
+       fechaHoraEndInput = document.getElementsByName("fechaHoraEnd")[0].value;
+    }
     setLoading(true);
     let photoImg='';
     if(nuevaC.imagenFile==="si"){
@@ -31,7 +47,7 @@ export const NuevaPublicacion = () => {
    }
    setLoading(false);
 
-    await formConvocatoriaHelper(nuevaC,photoImg,1);
+    await formConvocatoriaHelper(nuevaC,photoImg,horaInicioInput,fechaHoraStartInput,horaFinalInput,fechaHoraEndInput,1);
   };
 
   const handleChange = (e) => {
@@ -50,7 +66,7 @@ export const NuevaPublicacion = () => {
     Swal.fire({
       title: "Cargando Informacion",
       html: "Espere un poco",
-      timer: 10000,
+      timer: 20000,
       timerProgressBar: true,
       didOpen: () => {
         Swal.showLoading();

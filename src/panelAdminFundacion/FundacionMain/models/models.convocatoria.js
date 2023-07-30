@@ -9,5 +9,5 @@ export const Convocatoria = {
     horaInicio:new Date().toLocaleTimeString( {hour12: false}),
     fechaHoraEnd: new Date().toISOString().slice(0, 10),
     horaFinal: new Date().toLocaleTimeString( {hour12: false}),
-    imagen:new FormData(),
+    imagen:"",
 };

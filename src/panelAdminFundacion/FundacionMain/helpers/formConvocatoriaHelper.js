@@ -1,7 +1,7 @@
 import Swal from "sweetalert2"
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { apiPostConvocatoria ,apiUpdateConvocatoria} from "../api/apiConvocatoria";
+import { apiPostConvocatoria, apiUpdateConvocatoria } from "../api/apiConvocatoria";
 
 export const formSchema = Yup.object().shape({
     titulo: Yup.string().required('El titulo es requerido'),
@@ -16,14 +16,14 @@ export const formSchema = Yup.object().shape({
 
 export const formOptions = { resolver: yupResolver(formSchema) };
 
-export const formConvocatoriaHelper = async (convocatoria,photoImg, option) => {
+export const formConvocatoriaHelper = async (convocatoria, photoImg, horaInicioInput, fechaHoraStartInput, horaFinalInput, fechaHoraEndInput, option) => {
 
     let resultado;
-  
+    console.log(option);
     switch (option) {
         case 1:
-        
-        resultado = await apiPostConvocatoria(
+            console.log("holiwis");
+            resultado = await apiPostConvocatoria(
                 convocatoria.titulo,
                 convocatoria.descripcion,
                 convocatoria.lugar,
@@ -34,7 +34,7 @@ export const formConvocatoriaHelper = async (convocatoria,photoImg, option) => {
                 convocatoria.horaFinal,
                 photoImg
             )
-             console.log(resultado);
+            console.log(resultado);
             if (resultado) {
                 Swal.fire({
                     icon: "success",
@@ -51,20 +51,20 @@ export const formConvocatoriaHelper = async (convocatoria,photoImg, option) => {
                 })
             }
             break;
-            case 2:
-                resultado = await apiUpdateConvocatoria(
-                    convocatoria._id,
-                    convocatoria.titulo,
-                    convocatoria.descripcion,
-                    convocatoria.lugar,
-                    convocatoria.cupo,
-                    convocatoria.fechaHoraStart,
-                    convocatoria.fechaHoraEnd,
-                    convocatoria.horaInicio,
-                    convocatoria.horaFinal,
-                    photoImg
+        case 2:
+            resultado = await apiUpdateConvocatoria(
+                convocatoria._id,
+                convocatoria.titulo,
+                convocatoria.descripcion,
+                convocatoria.lugar,
+                convocatoria.cupo,
+                fechaHoraStartInput,
+                fechaHoraEndInput,
+                horaInicioInput,
+                horaFinalInput,
+                photoImg
             );
-            
+
             if (resultado) {
                 localStorage.removeItem("idConvocatoria");
                 Swal.fire({
