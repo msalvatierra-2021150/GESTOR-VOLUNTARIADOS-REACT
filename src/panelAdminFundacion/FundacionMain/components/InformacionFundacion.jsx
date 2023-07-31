@@ -52,19 +52,19 @@ export const InformacionFundacion = ({ objetos }) => {
           <p>{objetos.acerca_de}</p>
           <div className="mt-3">
             <label className="tx-11 font-weight-bold mb-0 text-uppercase">
-              Direccion:
+              Dirección:
             </label>
             <p className="text-muted">{objetos.direccion} </p>
           </div>
           <div className="mt-3">
             <label className="tx-11 font-weight-bold mb-0 text-uppercase">
-              Telefono:
+              Teléfono:
             </label>
             <p className="text-muted">{objetos.telefono}</p>
           </div>
           <div className="mt-3">
             <label className="tx-11 font-weight-bold mb-0 text-uppercase">
-              Correo Electronico:
+              Correo Electrónico:
             </label>
             <p className="text-muted">{objetos.correo}</p>
           </div>
@@ -72,8 +72,8 @@ export const InformacionFundacion = ({ objetos }) => {
             <p className="tx-11 font-weight-bold mb-0 text-uppercase">
               Sitio Web:
             </p>
-            <a className="text-muted" href={objetos.sitio_web}>
-              Presione Aqui
+            <a className="text-muted hand-pointer" href={objetos.sitio_web}>
+              Presione Aquí
             </a>
           </div>
           <div className="mt-3 d-flex social-links">

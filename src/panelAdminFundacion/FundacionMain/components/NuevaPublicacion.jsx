@@ -7,7 +7,7 @@ import { Convocatoria } from "../models/models.convocatoria";
 import { formConvocatoriaHelper, formOptions } from "../helpers/formConvocatoriaHelper";
 import Swal from 'sweetalert2';
 import { uploadFile } from "../../CrearCuenta/api/apiFundacion";
-export const NuevaPublicacion = () => {
+export const NuevaPublicacion = ({nombreFudacion, imgPerfil}) => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [nuevaC, setNuevaC] = useState(Convocatoria)
@@ -91,11 +91,11 @@ export const NuevaPublicacion = () => {
                 <div className="d-flex align-items-center">
                   <Image
                     className="img-xs rounded-circle"
-                    src="https://hermanopedrogt.org/wp-content/uploads/2022/06/ISOTIPO-06.png"
+                    src={imgPerfil}
                     alt=""
                   />
                   <div className="ml-2 d-flex align-items-center">
-                    <p>Obras Sociales del Hermano Pedro</p>
+                    <p className="ms-2">{nombreFudacion}</p>
                   </div>
                 </div>
               </div>
@@ -114,7 +114,7 @@ export const NuevaPublicacion = () => {
                     }}
                   />
                   <label htmlFor="floatingTextInput1">
-                    Nombre de la Fundación
+                    Título de la convocatoria
                   </label>
                 </div>
                 <div className="form-floating mb-3">

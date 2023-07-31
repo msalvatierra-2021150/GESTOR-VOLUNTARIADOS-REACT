@@ -40,7 +40,7 @@ export const FundacionMain = () => {
             <div className="col-md-8 col-xl-6 middle-wrapper">
               <div className="row">
                 <div className="col-md-12 grid-margin">
-                    <NuevaPublicacion/>
+                {nuevaF=== undefined ? []:[<NuevaPublicacion nombreFudacion={nuevaF.nombre} imgPerfil={nuevaF.fotoPerfil}/>]}
                 </div>
                 <div className="col-md-12">
                     <PublicacionesFundacion/>

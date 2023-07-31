@@ -394,3 +394,7 @@ a {
         display: none !important;
     }
 }
+
+.hand-pointer {
+    cursor: pointer;
+}
