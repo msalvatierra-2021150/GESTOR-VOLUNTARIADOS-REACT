@@ -106,6 +106,7 @@ export const Aplicaciones = () => {
     confirmButtonColor: "#7fad39",
   });
   }
+  console.log(contadores);
   return (
     <>
       <div className="container mt-5">
@@ -115,7 +116,7 @@ export const Aplicaciones = () => {
             <div className="mb-3">
               <h5 className="card-title">
                 Aplicaciones
-                <span className="text-muted fw-normal ms-2">{contadores.aplicaciones_recibidas}</span>
+                <span className="text-muted fw-normal ms-2">{contadores===null? [0]:[contadores.aplicaciones_recibidas]}</span>
               </h5>
             </div>
           </div>
@@ -123,16 +124,16 @@ export const Aplicaciones = () => {
             <div className="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
               <div className="info">
                 <div href="#" data-bs-toggle="modal" data-bs-target=".add-new" className="btn btn-primary mx-1 fw-bold text-white">
-                  Total aplicaciones: {contadores.aplicaciones_recibidas}
+                  Total aplicaciones: {contadores===null? [0]:[contadores.aplicaciones_recibidas]}
                 </div>
                 <div href="#" data-bs-toggle="modal" data-bs-target=".add-new" className="btn btn-success mx-1 fw-bold">
-                  Aplicaciones aceptadas: {contadores.aplicaciones_aceptadas}
+                  Aplicaciones aceptadas: {contadores===null? [0]:[contadores.aplicaciones_aceptadas]}
                 </div>
                 <div href="#" data-bs-toggle="modal" data-bs-target=".add-new" className="btn btn-danger mx-1 fw-bold">
-                  Aplicaciones rechazadas: {contadores.aplicaciones_rechazadas}
+                  Aplicaciones rechazadas: {contadores===null? [0]:[contadores.aplicaciones_rechazadas]}
                 </div>
                 <div href="#" data-bs-toggle="modal" data-bs-target=".add-new" className="btn btn-warning mx-1 fw-bold text-white">
-                  Aplicaciones pendientes: {contadores.aplicaciones_pendientes}
+                  Aplicaciones pendientes: {contadores===null? [0]:[contadores.aplicaciones_pendientes]}
                 </div>
               </div>
             </div>

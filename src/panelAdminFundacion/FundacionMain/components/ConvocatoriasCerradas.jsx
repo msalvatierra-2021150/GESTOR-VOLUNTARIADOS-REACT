@@ -118,7 +118,8 @@ export const ConvocatoriasCerradas = () => {
                         </svg>
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
-                        <Dropdown.Item>
+                      <Dropdown.Item onClick={ ()=> localStorage.setItem("idConvocatoria",c._id)}>
+                          
                           <Link to="/editar-convocatoria">
                             <FontAwesomeIcon
                               icon={faPenToSquare}
